@@ -15,7 +15,6 @@ use Premmerce\Filter\FilterPlugin;
  * Text Domain:       premmerce-filter
  * Domain Path:       /languages
  *
- * Tested up to: 6.5
  * WC requires at least: 3.6.0
  * WC tested up to: 8.7.0
  *

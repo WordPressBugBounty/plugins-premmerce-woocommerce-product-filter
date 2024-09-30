@@ -3,7 +3,7 @@
 Contributors: premmerce, freemius
 Tags: product filter, WooCommerce product filter, WooCommerce filter,  Premmerce, attributes filter
 Requires at least: 4.8
-Tested up to: 6.4.3
+Tested up to: 6.6
 Stable tag: 3.7.3
 Requires PHP: 5.6
 License: GPLv2 or later

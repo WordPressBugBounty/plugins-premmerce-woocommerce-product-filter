@@ -19,6 +19,7 @@ class OceanWpIntegration
      */
     public function __construct($fileManager)
     {
+
         $this->fileManager = $fileManager;
 
         add_action('wp_head', array($this, 'renderThemeIntegrationCss'));
@@ -87,6 +88,7 @@ class OceanWpIntegration
      */
     public function addCustomSelectSelector($localizeArray)
     {
+
         if (isset($localizeArray['customSelects']) && is_string($localizeArray['customSelects'])) {
             $localizeArray['customSelects'] .= ',[data-filter-control-select] ';
         }

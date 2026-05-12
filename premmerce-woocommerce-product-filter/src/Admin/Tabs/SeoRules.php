@@ -2,67 +2,68 @@
 
 namespace Premmerce\Filter\Admin\Tabs;
 
-use  Premmerce\Filter\Seo\SeoModel ;
-use  Premmerce\Filter\Seo\RulesTable ;
-use  Premmerce\Filter\Seo\WPMLHelper ;
-use  Premmerce\Filter\Seo\RulesGenerator ;
-use  Premmerce\SDK\V2\FileManager\FileManager ;
-use  Premmerce\SDK\V2\Notifications\AdminNotifier ;
-use  Premmerce\Filter\Admin\Tabs\Base\BaseSettings ;
-use  Premmerce\Filter\Admin\Tabs\Base\TabInterface ;
-class SeoRules implements  TabInterface 
-{
+use Premmerce\Filter\Seo\SeoModel;
+use Premmerce\Filter\Seo\RulesTable;
+use Premmerce\Filter\Seo\WPMLHelper;
+use Premmerce\Filter\Seo\RulesGenerator;
+use Premmerce\SDK\V2\FileManager\FileManager;
+use Premmerce\SDK\V2\Notifications\AdminNotifier;
+use Premmerce\Filter\Admin\Tabs\Base\BaseSettings;
+use Premmerce\Filter\Admin\Tabs\Base\TabInterface;
+class SeoRules implements TabInterface {
     /**
      * File Manager
      *
      * @var FileManager
      */
-    private  $fileManager ;
+    private $fileManager;
+
     /**
      * Model
      *
      * @var SeoModel
      */
-    private  $model ;
+    private $model;
+
     /**
      * Admin Notifier
      *
      * @var AdminNotifier
      */
-    private  $notifier ;
+    private $notifier;
+
     /**
      * Rules Generator
      *
      * @var RulesGenerator
      */
-    private  $generator ;
-    const  KEY_UPDATE_PATHS = 'premmerce_filter_update_paths' ;
+    private $generator;
+
+    const KEY_UPDATE_PATHS = 'premmerce_filter_update_paths';
+
     /**
      * SeoRules constructor.
      *
      * @param FileManager   $fileManager
      * @param AdminNotifier $notifier
      */
-    public function __construct( FileManager $fileManager, AdminNotifier $notifier )
-    {
+    public function __construct( FileManager $fileManager, AdminNotifier $notifier ) {
         $this->fileManager = $fileManager;
         $this->model = new SeoModel();
         $this->notifier = $notifier;
     }
-    
+
     /**
      * Register hooks
      */
-    public function init()
-    {
-        add_action( 'wp_ajax_get_taxonomy_terms', array( $this, 'getTaxonomyTerms' ) );
+    public function init() {
+        add_action( 'wp_ajax_get_taxonomy_terms', array($this, 'getTaxonomyTerms') );
     }
-    
+
     /**
      * Ajax get terms
      */
-    public function getTaxonomyTerms()
-    {
+    public function getTaxonomyTerms() {
         $terms = get_terms( array(
             'taxonomy'   => ( isset( $_POST['taxonomy'] ) && isset( $_POST['ajax_nonce'] ) && wp_verify_nonce( sanitize_text_field( $_POST['ajax_nonce'] ), 'filter-ajax-nonce' ) ? wc_clean( wp_unslash( $_POST['taxonomy'] ) ) : null ),
             'hide_empty' => false,
@@ -82,15 +83,14 @@ class SeoRules implements  TabInterface
                 'taxonomy' => $term->taxonomy,
             );
         }
-        echo  json_encode( $output ) ;
+        echo json_encode( $output );
         wp_die();
     }
-    
+
     /**
      * Render tab content
      */
-    public function render()
-    {
+    public function render() {
         $action = ( isset( $_REQUEST['action'] ) ? wc_clean( wp_unslash( $_REQUEST['action'] ) ) : null );
         switch ( $action ) {
             case 'edit':
@@ -110,15 +110,14 @@ class SeoRules implements  TabInterface
                 break;
         }
     }
-    
+
     /**
      * Render rules list
      */
-    public function renderList()
-    {
+    public function renderList() {
         $categoriesDropDownArgs = $this->getCategoryDropdownArgs();
         $attributes = $this->getAttributes();
-        $table = new RulesTable( $this->fileManager, $this->model );
+        $table = new RulesTable($this->fileManager, $this->model);
         $rule = array(
             'id'                => '',
             'term_id'           => '',
@@ -139,46 +138,42 @@ class SeoRules implements  TabInterface
             'fm'                     => $this->fileManager,
         ) );
     }
-    
+
     /**
      * Tab label
      *
      * @return string
      */
-    public function getLabel()
-    {
+    public function getLabel() {
         $text = __( 'SEO Rules', 'premmerce-filter' );
         $seoLabel = BaseSettings::premiumForTabLabel( $text );
         return $seoLabel;
     }
-    
+
     /**
      * Tab name
      *
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return 'seo';
     }
-    
+
     /**
      * Is tab valid
      *
      * @return bool
      */
-    public function valid()
-    {
+    public function valid() {
         return true;
     }
-    
+
     /**
      * Arguments for category select
      *
      * @return array
      */
-    private function getCategoryDropdownArgs()
-    {
+    private function getCategoryDropdownArgs() {
         $categoriesDropDownArgs = array(
             'hide_empty'       => 0,
             'hide_if_empty'    => false,
@@ -197,36 +192,32 @@ class SeoRules implements  TabInterface
         );
         return $categoriesDropDownArgs;
     }
-    
+
     /**
      * Get attributes for term selects
      *
      * @return array
      */
-    private function getAttributes()
-    {
+    private function getAttributes() {
         $wcAttributes = wc_get_attribute_taxonomies();
         $attributes = array();
         foreach ( $wcAttributes as $attribute ) {
             $attributes['pa_' . $attribute->attribute_name] = $attribute->attribute_label;
         }
-        $brand_taxonomies = apply_filters( 'premmerce_product_filter_brand_taxonomies', array( 'product_brand' ) );
+        $brand_taxonomies = apply_filters( 'premmerce_product_filter_brand_taxonomies', array('product_brand') );
         foreach ( $brand_taxonomies as $brand_taxonomy ) {
-            
             if ( taxonomy_exists( $brand_taxonomy ) ) {
                 $brandTaxonomy = get_taxonomy( $brand_taxonomy );
                 $attributes[$brandTaxonomy->name] = $brandTaxonomy->label;
             }
-        
         }
         return $attributes;
     }
-    
+
     /**
      * Redirect to previous page
      */
-    private function redirectBack()
-    {
+    private function redirectBack() {
         wp_safe_redirect( ( isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : null ) );
         die;
     }

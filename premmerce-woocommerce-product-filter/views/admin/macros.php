@@ -4,8 +4,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 if ( !function_exists( 'premmerce_filter_admin_variables' ) ) {
-    function premmerce_filter_admin_variables( $field, $includeIndividualAttributes = false, $disabled = '' )
-    {
+    function premmerce_filter_admin_variables(  $field, $includeIndividualAttributes = false, $disabled = ''  ) {
         $buttonsInfo = [
             'name'        => __( 'Category name', 'premmerce-filter' ),
             'description' => __( 'Category description', 'premmerce-filter' ),
@@ -18,14 +17,14 @@ if ( !function_exists( 'premmerce_filter_admin_variables' ) ) {
         foreach ( $buttonsInfo as $key => $buttonName ) {
             ?>
 <button class="button" type="button" data-var="{<?php 
-            echo  esc_attr( $key ) ;
+            echo esc_attr( $key );
             ?>}" data-field="<?php 
-            echo  esc_attr( $field ) ;
+            echo esc_attr( $field );
             ?>" <?php 
-            echo  esc_attr( $disabled ) ;
+            echo esc_attr( $disabled );
             ?>>
 	<?php 
-            echo  esc_attr( $buttonName ) ;
+            echo esc_attr( $buttonName );
             ?>
 </button>
 		<?php 
@@ -33,13 +32,12 @@ if ( !function_exists( 'premmerce_filter_admin_variables' ) ) {
         ?>
 
 		<?php 
-        
         if ( $includeIndividualAttributes ) {
             ?>
 <select data-var="" data-field="<?php 
-            echo  esc_attr( $field ) ;
+            echo esc_attr( $field );
             ?>" data-attribute-name-select="" <?php 
-            echo  esc_attr( $disabled ) ;
+            echo esc_attr( $disabled );
             ?>>
 	<option value=""><?php 
             esc_attr_e( 'Add attribute name', 'premmerce-filter' );
@@ -48,7 +46,6 @@ if ( !function_exists( 'premmerce_filter_admin_variables' ) ) {
 
 			<?php 
         }
-    
     }
 
 }
@@ -58,13 +55,12 @@ if ( !function_exists( 'premmerce_filter_admin_term_table_row' ) ) {
         $selectedTaxonomy = null,
         $dataTermIds = null,
         $disabled = ''
-    )
-    {
+    ) {
         ?>
 <tr>
 	<td>
 		<select data-select-taxonomy data-select-two <?php 
-        echo  esc_attr( $disabled ) ;
+        echo esc_attr( $disabled );
         ?>>
 			<option value=""><?php 
         esc_attr_e( 'Select taxonomy', 'premmerce-filter' );
@@ -76,11 +72,11 @@ if ( !function_exists( 'premmerce_filter_admin_term_table_row' ) ) {
             $selected = ( $selectedTaxonomy === $taxonomy ? 'selected' : '' );
             ?>
 				<option <?php 
-            echo  esc_attr( $selected ) ;
+            echo esc_attr( $selected );
             ?> value="<?php 
-            echo  esc_attr( $taxonomy ) ;
+            echo esc_attr( $taxonomy );
             ?>"><?php 
-            echo  esc_attr( $label ) ;
+            echo esc_attr( $label );
             ?></option>
 			<?php 
         }
@@ -89,7 +85,7 @@ if ( !function_exists( 'premmerce_filter_admin_term_table_row' ) ) {
 	</td>
 	<td>
 		<select <?php 
-        echo  esc_attr( $disabled ) ;
+        echo esc_attr( $disabled );
         ?>
 			data-select-term data-select-two multiple
 			data-allow-clear="true"
@@ -97,7 +93,7 @@ if ( !function_exists( 'premmerce_filter_admin_term_table_row' ) ) {
         esc_attr_e( 'Select term', 'premmerce-filter' );
         ?>"
 			data-selected-value="<?php 
-        echo  ( $dataTermIds ? esc_attr( htmlspecialchars( wp_json_encode( $dataTermIds ), ENT_QUOTES, 'UTF-8' ) ) : '' ) ;
+        echo ( $dataTermIds ? esc_attr( htmlspecialchars( wp_json_encode( $dataTermIds ), ENT_QUOTES, 'UTF-8' ) ) : '' );
         ?>"
 			>
 			<option value="">
@@ -117,8 +113,7 @@ if ( !function_exists( 'premmerce_filter_admin_term_table_row' ) ) {
 
 }
 if ( !function_exists( 'premmerce_filter_admin_seo_variable_inputs' ) ) {
-    function premmerce_filter_admin_seo_variable_inputs( $rule = array(), $disabled = '' )
-    {
+    function premmerce_filter_admin_seo_variable_inputs(  $rule = [], $disabled = ''  ) {
         $rule = array_merge( [
             'h1'                => '',
             'title'             => '',
@@ -127,7 +122,7 @@ if ( !function_exists( 'premmerce_filter_admin_seo_variable_inputs' ) ) {
             'discourage_search' => false,
             'enabled'           => true,
         ], $rule );
-        $endOfTheWord = ( !empty($rule['id']) ? '' : 's' );
+        $endOfTheWord = ( !empty( $rule['id'] ) ? '' : 's' );
         ?>
 <div class="premmerce-filter-form">
 	<div class="form-field">
@@ -137,9 +132,9 @@ if ( !function_exists( 'premmerce_filter_admin_seo_variable_inputs' ) ) {
         ?>
 		</label>
 		<input type="text" name="h1" id="rule-h1" value="<?php 
-        echo  esc_attr( $rule['h1'] ) ;
+        echo esc_attr( $rule['h1'] );
         ?>" <?php 
-        echo  esc_attr( $disabled ) ;
+        echo esc_attr( $disabled );
         ?>>
 		<?php 
         premmerce_filter_admin_variables( '#rule-h1', true, $disabled );
@@ -152,9 +147,9 @@ if ( !function_exists( 'premmerce_filter_admin_seo_variable_inputs' ) ) {
         ?>
 		</label>
 		<input name="title" type="text" id="rule-title" value="<?php 
-        echo  esc_attr( $rule['title'] ) ;
+        echo esc_attr( $rule['title'] );
         ?>" <?php 
-        echo  esc_attr( $disabled ) ;
+        echo esc_attr( $disabled );
         ?>>
 		<?php 
         premmerce_filter_admin_variables( '#rule-title', true, $disabled );
@@ -167,9 +162,9 @@ if ( !function_exists( 'premmerce_filter_admin_seo_variable_inputs' ) ) {
         ?>
 		</label>
 		<textarea name="meta_description" id="rule-meta-description" cols="30" rows="5" <?php 
-        echo  esc_attr( $disabled ) ;
+        echo esc_attr( $disabled );
         ?>><?php 
-        echo  esc_textarea( $rule['meta_description'] ) ;
+        echo esc_textarea( $rule['meta_description'] );
         ?></textarea>
 		<?php 
         premmerce_filter_admin_variables( '#rule-meta-description', true, $disabled );
@@ -184,17 +179,15 @@ if ( !function_exists( 'premmerce_filter_admin_seo_variable_inputs' ) ) {
 		</label>
 		<?php 
         //show in free version.
-        
         if ( !premmerce_pwpf_fs()->can_use_premium_code() ) {
             ?>
 		<textarea name="meta_description" id="rule-description" cols="30" rows="5" <?php 
-            echo  esc_attr( $disabled ) ;
+            echo esc_attr( $disabled );
             ?>><?php 
-            echo  esc_textarea( $rule['description'] ) ;
+            echo esc_textarea( $rule['description'] );
             ?></textarea>
 		<?php 
         }
-        
         premmerce_filter_admin_variables( '#rule-description', true, $disabled );
         ?>
 	</div>
@@ -203,12 +196,12 @@ if ( !function_exists( 'premmerce_filter_admin_seo_variable_inputs' ) ) {
 			<input type="checkbox" name="discourage_search" <?php 
         checked( 1, $rule['discourage_search'] );
         ?> <?php 
-        echo  esc_attr( $disabled ) ;
+        echo esc_attr( $disabled );
         ?>>
 			<?php 
         /* translators: %s: end of the word */
         $helpText = sprintf( __( 'Discourage search engines from indexing this page%s', 'premmerce-filter' ), esc_attr( $endOfTheWord ) );
-        echo  esc_attr( $helpText ) ;
+        echo esc_attr( $helpText );
         ?>
 		</label>
 		<p class="description">
@@ -222,7 +215,7 @@ if ( !function_exists( 'premmerce_filter_admin_seo_variable_inputs' ) ) {
 			<input type="checkbox" name="enabled" <?php 
         checked( 1, $rule['enabled'] );
         ?> <?php 
-        echo  esc_attr( $disabled ) ;
+        echo esc_attr( $disabled );
         ?>>
 			<?php 
         esc_attr_e( 'Enable', 'premmerce-filter' );

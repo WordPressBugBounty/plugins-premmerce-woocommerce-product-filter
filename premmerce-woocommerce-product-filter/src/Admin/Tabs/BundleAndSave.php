@@ -27,6 +27,7 @@ class BundleAndSave implements TabInterface
      */
     public function init()
     {
+
     }
 
     /**

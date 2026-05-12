@@ -2,35 +2,35 @@
 
 namespace Premmerce\Filter\Seo;
 
-use  Premmerce\Filter\Admin\Tabs\Cache ;
-use  Premmerce\SDK\V2\FileManager\FileManager ;
+use Premmerce\Filter\Admin\Tabs\Cache;
+use Premmerce\SDK\V2\FileManager\FileManager;
 /**
  * Class BundlesTable
  *
  * @package Premmerce\ProductBundles\Admin
  */
-class RulesTable extends \WP_List_Table
-{
+class RulesTable extends \WP_List_Table {
     /**
      * Seo Model
      *
      * @var SeoModel
      */
-    private  $model ;
+    private $model;
+
     /**
      * File Manager
      *
      * @var FileManager
      */
-    private  $fileManager ;
+    private $fileManager;
+
     /**
      * BundlesTable constructor.
      *
      * @param FileManager $fileManager
      * @param SeoModel    $model
      */
-    public function __construct( FileManager $fileManager, SeoModel $model )
-    {
+    public function __construct( FileManager $fileManager, SeoModel $model ) {
         parent::__construct( array(
             'singular' => 'Rules',
             'plural'   => 'Rule',
@@ -40,7 +40,7 @@ class RulesTable extends \WP_List_Table
         $this->model = $model;
         $this->prepare_items();
     }
-    
+
     /**
      * Fill checkbox column
      *
@@ -48,8 +48,7 @@ class RulesTable extends \WP_List_Table
      *
      * @return string
      */
-    protected function column_cb( $item )
-    {
+    protected function column_cb( $item ) {
         $disabled = '';
         if ( !premmerce_pwpf_fs()->can_use_premium_code() ) {
             $disabled = 'disabled';
@@ -57,7 +56,7 @@ class RulesTable extends \WP_List_Table
         $checkbox = "<input type='checkbox' name='ids[]' id='cb-select-{$item['id']}' value='{$item['id']}' {$disabled}>";
         return $checkbox;
     }
-    
+
     /**
      * Fill label column
      *
@@ -65,25 +64,23 @@ class RulesTable extends \WP_List_Table
      *
      * @return string
      */
-    protected function column_label( $item )
-    {
+    protected function column_label( $item ) {
         return $item['label'];
     }
-    
+
     /**
      * Fill category field
      *
      * @param array $item
      */
-    protected function column_category( $item )
-    {
+    protected function column_category( $item ) {
         $url = '';
         $this->fileManager->includeTemplate( 'admin/seo/table/column-h1.php', array(
             'item' => $item,
             'url'  => $url,
         ) );
     }
-    
+
     /**
      * Fill enabled field
      *
@@ -91,14 +88,13 @@ class RulesTable extends \WP_List_Table
      *
      * @return string
      */
-    protected function column_enabled( $item )
-    {
+    protected function column_enabled( $item ) {
         if ( 1 == $item['enabled'] ) {
             return '<span class="dashicons dashicons-yes"></span>';
         }
         return '-';
     }
-    
+
     /**
      * Fill discourage_search field
      *
@@ -106,21 +102,19 @@ class RulesTable extends \WP_List_Table
      *
      * @return string
      */
-    protected function column_discourage_search( $item )
-    {
+    protected function column_discourage_search( $item ) {
         if ( 1 == $item['discourage_search'] ) {
             return '<span class="dashicons dashicons-yes"></span>';
         }
         return '-';
     }
-    
+
     /**
      * Return array with columns titles
      *
      * @return array
      */
-    public function get_columns()
-    {
+    public function get_columns() {
         $data['cb'] = '<input type="checkbox">';
         $data['category'] = __( 'Category', 'premmerce-filter' );
         $data['label'] = __( 'Label', 'premmerce-filter' );
@@ -128,14 +122,13 @@ class RulesTable extends \WP_List_Table
         $data['enabled'] = __( 'Enabled', 'premmerce-filter' );
         return $data;
     }
-    
+
     /**
      * Set actions list for bulk
      *
      * @return array
      */
-    protected function get_bulk_actions()
-    {
+    protected function get_bulk_actions() {
         $data = array(
             'delete'  => __( 'Delete', 'premmerce-filter' ),
             'enable'  => __( 'Enable', 'premmerce-filter' ),
@@ -143,13 +136,12 @@ class RulesTable extends \WP_List_Table
         );
         return $data;
     }
-    
+
     /**
      * Set items data in table
      */
-    public function prepare_items()
-    {
-        $this->_column_headers = array( $this->get_columns() );
+    public function prepare_items() {
+        $this->_column_headers = array($this->get_columns());
         $this->handle_bulk_actions();
         $perPage = 20;
         $currentPage = $this->get_pagenum();
@@ -171,32 +163,28 @@ class RulesTable extends \WP_List_Table
         ) );
         $this->items = $data;
     }
-    
+
     /**
      * Render if no items
      */
-    public function no_items()
-    {
+    public function no_items() {
         esc_attr_e( 'No rules found.', 'premmerce-filter' );
     }
-    
+
     /**
      * Handle table bulk actions
      */
-    public function handle_bulk_actions()
-    {
+    public function handle_bulk_actions() {
     }
-    
+
     /**
      * Extra table navigation
      *
      * @param string $which
      */
-    public function extra_tablenav( $which )
-    {
-        
+    public function extra_tablenav( $which ) {
         if ( 'top' === $which ) {
-            echo  '<div class="alignleft actions">' ;
+            echo '<div class="alignleft actions">';
             $this->categories_dropdown();
             submit_button(
                 __( 'Filter' ),
@@ -204,19 +192,17 @@ class RulesTable extends \WP_List_Table
                 'filter_action',
                 false,
                 array(
-                'id' => 'post-query-submit',
-            )
+                    'id' => 'post-query-submit',
+                )
             );
-            echo  '</div>' ;
+            echo '</div>';
         }
-    
     }
-    
+
     /**
      * Display categories dropdown
      */
-    protected function categories_dropdown()
-    {
+    protected function categories_dropdown() {
         $dropdown_options = array(
             'show_option_all' => get_taxonomy( 'product_cat' )->labels->all_items,
             'hide_empty'      => 0,
@@ -227,10 +213,10 @@ class RulesTable extends \WP_List_Table
             'name'            => 'filter_product_cat',
             'selected'        => $this->get_query_filter( 'filter_product_cat' ),
         );
-        echo  '<label class="screen-reader-text" for="cat">' . esc_attr__( 'Filter by category', 'premmerce-filter' ) . '</label>' ;
+        echo '<label class="screen-reader-text" for="cat">' . esc_attr__( 'Filter by category', 'premmerce-filter' ) . '</label>';
         wp_dropdown_categories( $dropdown_options );
     }
-    
+
     /**
      * Get query filter
      *
@@ -238,9 +224,8 @@ class RulesTable extends \WP_List_Table
      *
      * @return string|null
      */
-    private function get_query_filter( $name )
-    {
-        if ( !empty($_REQUEST[$name]) ) {
+    private function get_query_filter( $name ) {
+        if ( !empty( $_REQUEST[$name] ) ) {
             return sanitize_text_field( $_REQUEST[$name] );
         }
         return null;

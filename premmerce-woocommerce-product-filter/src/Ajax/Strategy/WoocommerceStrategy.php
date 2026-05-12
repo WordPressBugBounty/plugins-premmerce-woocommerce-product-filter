@@ -6,6 +6,7 @@ class WoocommerceStrategy extends WidgetsStrategy
 {
     public function __construct()
     {
+
         add_action('woocommerce_before_shop_loop', array($this, 'openContainer'), 0);
 
         add_action('woocommerce_after_shop_loop', array($this, 'closeContainer'), 999);

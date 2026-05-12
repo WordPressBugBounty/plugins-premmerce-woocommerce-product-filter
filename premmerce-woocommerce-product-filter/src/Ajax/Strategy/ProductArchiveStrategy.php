@@ -45,6 +45,7 @@ class ProductArchiveStrategy extends WidgetsStrategy
             echo '<div>';
             include $template;
             echo '</div>';
+
         } else {
             wc_get_template('archive-product.php');
         }
@@ -73,6 +74,7 @@ class ProductArchiveStrategy extends WidgetsStrategy
         $templateDir            = wp_upload_dir()['basedir'] . '/cache/premmerce_filter/' . md5($productArchiveTemplate);
 
         if (!file_exists($templateDir)) {
+
             if ($productArchiveTemplate) {
                 $content = file_get_contents($productArchiveTemplate);
 

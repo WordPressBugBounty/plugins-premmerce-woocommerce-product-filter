@@ -23,6 +23,7 @@ class SliderFilter extends TaxonomyFilter
         $terms = $this->getTerms();
 
         if (count($terms)) {
+
             $terms = array_filter(
                 $terms,
                 function ($term) {
@@ -102,6 +103,7 @@ class SliderFilter extends TaxonomyFilter
         $values = $this->getSelectedValues();
 
         if (isset($values['min_selected']) || isset($values['max_selected'])) {
+
             $terms = array_map(
                 function ($term) {
                     return $term->slug;
@@ -112,6 +114,7 @@ class SliderFilter extends TaxonomyFilter
             $terms = array_filter(
                 $terms,
                 function ($item) use ($values) {
+
                     $result = true;
                     $item   = (int) $item;
 
@@ -163,6 +166,7 @@ class SliderFilter extends TaxonomyFilter
      */
     public function extendTaxQuery($taxQuery)
     {
+
         if ($this->isActive()) {
             //This filter type should be initialized here, because active values are selected from db
             $this->init();
@@ -203,6 +207,7 @@ class SliderFilter extends TaxonomyFilter
     public function init()
     {
         if (null === $this->terms) {
+
             $terms = get_terms(array('taxonomy' => $this->taxonomy->name));
 
             $activeTerms = $this->getTermsInInterval($terms);

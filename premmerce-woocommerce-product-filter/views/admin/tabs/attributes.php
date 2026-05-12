@@ -3,7 +3,7 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
-use  Premmerce\Filter\FilterPlugin ;
+use Premmerce\Filter\FilterPlugin;
 /**
  * Attributes variables
  *
@@ -27,16 +27,15 @@ esc_attr_e( 'Attributes', 'premmerce-filter' );
 require __DIR__ . '/actions.php';
 ?>
 	<div class="tablenav-pages premmerce-filter-pagination"><?php 
-echo  wp_kses( paginate_links( $paginationArgs ), FilterPlugin::HTML_TAGS ) ;
+echo wp_kses( paginate_links( $paginationArgs ), FilterPlugin::HTML_TAGS );
 ?></div>
 </div>
 
 <?php 
-
 if ( $prevId ) {
     ?>
 	<div class="premmerce-filter-swap-container" data-swap-id="<?php 
-    echo  esc_attr( $prevId ) ;
+    echo esc_attr( $prevId );
     ?>">
 	<?php 
     esc_attr_e( 'Move to previous page', 'premmerce-filter' );
@@ -44,7 +43,6 @@ if ( $prevId ) {
 </div>
 <?php 
 }
-
 ?>
 <table class="widefat striped premmerce-filter-table">
 	<thead>
@@ -72,15 +70,15 @@ esc_attr_e( 'Visibility', 'premmerce-filter' );
 foreach ( apply_filters( 'premmerce-filter-table-attributes-columns-header', [] ) as $columnArgs ) {
     ?>
 				<th width="<?php 
-    echo  ( isset( $columnArgs['width'] ) ? esc_attr( $columnArgs['width'] ) : '10%' ) ;
+    echo ( isset( $columnArgs['width'] ) ? esc_attr( $columnArgs['width'] ) : '10%' );
     ?>" class="premmerce-filter-table__align-
 								  <?php 
-    echo  ( isset( $columnArgs['align'] ) ? esc_attr( $columnArgs['align'] ) : 'left' ) ;
-    echo  ( isset( $columnArgs['class'] ) ? ' ' . esc_attr( $columnArgs['class'] ) : '' ) ;
+    echo ( isset( $columnArgs['align'] ) ? esc_attr( $columnArgs['align'] ) : 'left' );
+    echo ( isset( $columnArgs['class'] ) ? ' ' . esc_attr( $columnArgs['class'] ) : '' );
     ?>
 				">
 				<?php 
-    echo  esc_attr( $columnArgs['label'] ) ;
+    echo esc_attr( $columnArgs['label'] );
     ?>
 			</th>
 			<?php 
@@ -90,14 +88,13 @@ foreach ( apply_filters( 'premmerce-filter-table-attributes-columns-header', [] 
 		</tr>
 	</thead>
 	<tbody data-sortable="premmerce_filter_sort_attributes" data-prev="<?php 
-echo  esc_attr( $prevId ) ;
+echo esc_attr( $prevId );
 ?>"
 		data-next="<?php 
-echo  esc_attr( $nextId ) ;
+echo esc_attr( $nextId );
 ?>" data-swap="">
 
 		<?php 
-
 if ( count( $attributes ) > 0 ) {
     ?>
 			<?php 
@@ -105,22 +102,20 @@ if ( count( $attributes ) > 0 ) {
         $freeDisabled = '';
         $premiumLink = '';
         //check if attribute is premium on free plan
-        
         if ( !premmerce_pwpf_fs()->can_use_premium_code() ) {
             $freeDisabled = ( in_array( $attrId, $premiumAttributes ) ? 'disabled' : '' );
             $premiumLinkText = __( 'Premium', 'premmerce-filter' );
             $premiumLink = '<a class="premmerce-premium-blue" href="' . admin_url( 'admin.php?page=premmerce-filter-admin-pricing' ) . '">' . $premiumLinkText . '</a>';
         }
-        
         ?>
 
 		<tr>
 			<td>
 				<input data-selectable="attribute" type="checkbox" data-id="<?php 
-        echo  esc_attr( $attrId ) ;
+        echo esc_attr( $attrId );
         ?>"
 					<?php 
-        echo  esc_attr( $freeDisabled ) ;
+        echo esc_attr( $freeDisabled );
         ?>>
 			</td>
 
@@ -129,30 +124,30 @@ if ( count( $attributes ) > 0 ) {
         $selectTypes = $types;
         //remove image/slider/color types from select for Show on sale / in stock / rating filter (PremiumAttributes)
         if ( in_array( $attrId, $premiumAttributes, true ) ) {
-            $selectTypes = array_diff_key( $types, array_flip( [ FilterPlugin::TYPE_COLOR, FilterPlugin::TYPE_SLIDER, FilterPlugin::TYPE_IMAGE ] ) );
+            $selectTypes = array_diff_key( $types, array_flip( [FilterPlugin::TYPE_COLOR, FilterPlugin::TYPE_SLIDER, FilterPlugin::TYPE_IMAGE] ) );
         }
         ?>
 
 				<select data-single-action="premmerce_filter_bulk_action_attributes" data-id="<?php 
-        echo  esc_attr( $attrId ) ;
+        echo esc_attr( $attrId );
         ?>"
 					<?php 
-        echo  esc_attr( $freeDisabled ) ;
+        echo esc_attr( $freeDisabled );
         ?>>
 					<?php 
         foreach ( $selectTypes as $key => $selectType ) {
             $disabled = '';
-            echo  ( !premmerce_pwpf_fs()->can_use_premium_code() && 'premium' === $selectType['plan'] ? 'disabled' : '' ) ;
+            echo ( !premmerce_pwpf_fs()->can_use_premium_code() && 'premium' === $selectType['plan'] ? 'disabled' : '' );
             ?>
 					<option <?php 
-            echo  selected( $key, $attributesConfig[$attrId]['type'] ) ;
+            echo selected( $key, $attributesConfig[$attrId]['type'] );
             ?> value="<?php 
-            echo  esc_attr( $key ) ;
+            echo esc_attr( $key );
             ?>" <?php 
-            echo  esc_attr( $disabled ) ;
+            echo esc_attr( $disabled );
             ?>>
 						<?php 
-            echo  esc_attr( $selectType['text'] ) ;
+            echo esc_attr( $selectType['text'] );
             ?>
 					</option>
 					<?php 
@@ -165,10 +160,10 @@ if ( count( $attributes ) > 0 ) {
 			</td>
 			<td>
 				<select data-single-action="premmerce_filter_bulk_action_attributes" data-id="<?php 
-        echo  esc_attr( $attrId ) ;
+        echo esc_attr( $attrId );
         ?>"
 				<?php 
-        echo  esc_attr( $freeDisabled ) ;
+        echo esc_attr( $freeDisabled );
         ?>>
 					<?php 
         foreach ( $display as $key => $selectType ) {
@@ -181,15 +176,15 @@ if ( count( $attributes ) > 0 ) {
             $displayValue = substr( $key, strlen( 'display_' ) );
             ?>
 					<option <?php 
-            echo  selected( $displayValue, $attributesConfig[$attrId]['display_type'] ) ;
+            echo selected( $displayValue, $attributesConfig[$attrId]['display_type'] );
             ?>
 						value="<?php 
-            echo  esc_attr( $key ) ;
+            echo esc_attr( $key );
             ?>" <?php 
-            echo  esc_attr( $disabled ) ;
+            echo esc_attr( $disabled );
             ?>>
 						<?php 
-            echo  esc_attr( $selectType['text'] ) ;
+            echo esc_attr( $selectType['text'] );
             ?>
 					</option>
 					<?php 
@@ -199,7 +194,7 @@ if ( count( $attributes ) > 0 ) {
 
 			</td>
 			<td class="premmerce-filter-table__capitalize"><?php 
-        echo  esc_attr( $label ) ;
+        echo esc_attr( $label );
         ?></td>
 			<td class="premmerce-filter-table__align-center">
 				<?php 
@@ -207,31 +202,29 @@ if ( count( $attributes ) > 0 ) {
         ?>
 
 				<?php 
-        
         if ( 'disabled' === $freeDisabled ) {
             ?>
 					<?php 
-            echo  wp_kses( $premiumLink, FilterPlugin::HTML_TAGS ) ;
+            echo wp_kses( $premiumLink, FilterPlugin::HTML_TAGS );
             ?>
 				<?php 
         } else {
             ?>
 				<span data-single-action="premmerce_filter_bulk_action_attributes" data-id="<?php 
-            echo  esc_attr( $attrId ) ;
+            echo esc_attr( $attrId );
             ?>"
 					data-value="<?php 
-            echo  ( $active ? 'hide' : 'display' ) ;
+            echo ( $active ? 'hide' : 'display' );
             ?>"
 					title="<?php 
             ( $active ? esc_attr_e( 'Hide', 'premmerce-filter' ) : esc_attr_e( 'Display', 'premmerce-filter' ) );
             ?>"
 					class="dashicons dashicons-<?php 
-            echo  ( $active ? 'visibility' : 'hidden' ) ;
+            echo ( $active ? 'visibility' : 'hidden' );
             ?> click-action-span">
 				</span>
 				<?php 
         }
-        
         ?>
 
 			</td>
@@ -245,12 +238,12 @@ if ( count( $attributes ) > 0 ) {
             ?>
 			<td class="premmerce-filter-table__align-
 			<?php 
-            echo  ( isset( $columnArgs['align'] ) ? esc_attr( $columnArgs['align'] ) : 'left' ) ;
-            echo  ( isset( $columnArgs['class'] ) ? ' ' . esc_attr( $columnArgs['class'] ) : '' ) ;
+            echo ( isset( $columnArgs['align'] ) ? esc_attr( $columnArgs['align'] ) : 'left' );
+            echo ( isset( $columnArgs['class'] ) ? ' ' . esc_attr( $columnArgs['class'] ) : '' );
             ?>
 						">
 					<?php 
-            echo  esc_attr( $columnArgs['content'] ) ;
+            echo esc_attr( $columnArgs['content'] );
             ?>
 			</td>
 				<?php 
@@ -284,17 +277,15 @@ if ( count( $attributes ) > 0 ) {
 		</tr>
 		<?php 
 }
-
 ?>
 	</tbody>
 </table>
 
 <?php 
-
 if ( $nextId ) {
     ?>
 	<div class="premmerce-filter-swap-container" data-swap-id="<?php 
-    echo  esc_attr( $nextId ) ;
+    echo esc_attr( $nextId );
     ?>">
 		<?php 
     esc_attr_e( 'Move to next page', 'premmerce-filter' );
@@ -302,7 +293,6 @@ if ( $nextId ) {
 	</div>
 <?php 
 }
-
 ?>
 
 <div class="tablenav bottom">
@@ -310,7 +300,7 @@ if ( $nextId ) {
 require __DIR__ . '/actions.php';
 ?>
 	<div class="tablenav-pages premmerce-filter-pagination"><?php 
-echo  wp_kses( paginate_links( $paginationArgs ), FilterPlugin::HTML_TAGS ) ;
+echo wp_kses( paginate_links( $paginationArgs ), FilterPlugin::HTML_TAGS );
 ?></div>
 </div>
 

@@ -1,12 +1,9 @@
 <?php
-
-use Premmerce\Filter\FilterPlugin;
-
 /**
  * Plugin Name:       Premmerce Product Filter for WooCommerce
  * Plugin URI:        https://premmerce.com/woocommerce-product-filter/
  * Description:       Premmerce Product Filter for WooCommerce plugin is a convenient and flexible tool for managing filters for WooCommerce products.
- * Version:     3.7.3
+ * Version:     3.7.4
  *  *
  * Author:            Premmerce
  * Author URI:        https://premmerce.com
@@ -15,8 +12,9 @@ use Premmerce\Filter\FilterPlugin;
  * Text Domain:       premmerce-filter
  * Domain Path:       /languages
  *
+ * Tested up to: 6.9
  * WC requires at least: 3.6.0
- * WC tested up to: 8.7.0
+ * WC tested up to: 8.3.1
  *
  *  *
  *
@@ -32,7 +30,7 @@ if (! function_exists('premmerce_pwpf_fs')) {
 		function () {
 			include_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 			include_once plugin_dir_path(__FILE__) . '/freemius.php';
-			$main = new FilterPlugin(__FILE__);
+			$main = new Premmerce\Filter\FilterPlugin(__FILE__);
 
 			register_activation_hook(__FILE__, [$main, 'activate']);
 

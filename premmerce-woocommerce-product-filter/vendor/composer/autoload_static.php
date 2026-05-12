@@ -4,10 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9eb73f65b5eb7639149b9ea8f07d3841
+class ComposerStaticInite790ebde1bf4b5d7e20023e10058a721
 {
     public static $prefixLengthsPsr4 = array (
-        'P' => 
+        'P' =>
         array (
             'Premmerce\\SDK\\' => 14,
             'Premmerce\\Filter\\' => 17,
@@ -15,11 +15,11 @@ class ComposerStaticInit9eb73f65b5eb7639149b9ea8f07d3841
     );
 
     public static $prefixDirsPsr4 = array (
-        'Premmerce\\SDK\\' => 
+        'Premmerce\\SDK\\' =>
         array (
             0 => __DIR__ . '/..' . '/premmerce/wordpress-sdk/src',
         ),
-        'Premmerce\\Filter\\' => 
+        'Premmerce\\Filter\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
@@ -32,9 +32,9 @@ class ComposerStaticInit9eb73f65b5eb7639149b9ea8f07d3841
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9eb73f65b5eb7639149b9ea8f07d3841::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9eb73f65b5eb7639149b9ea8f07d3841::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit9eb73f65b5eb7639149b9ea8f07d3841::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite790ebde1bf4b5d7e20023e10058a721::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite790ebde1bf4b5d7e20023e10058a721::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite790ebde1bf4b5d7e20023e10058a721::$classMap;
 
         }, null, ClassLoader::class);
     }

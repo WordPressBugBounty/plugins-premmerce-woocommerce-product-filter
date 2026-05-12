@@ -19,18 +19,18 @@ $getTab = ( isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : '' );
 <div id="" class="pf-wrap-flex__col">
 
 	<a type="button" class="button" href="<?php 
-echo  esc_url( $generateUrl ) ;
+echo esc_url( $generateUrl );
 ?>" <?php 
-echo  esc_attr( $disabled ) ;
+echo esc_attr( $disabled );
 ?>>
 		<?php 
 esc_html_e( 'Generate Rules', 'premmerce-filter' );
 ?>
 	</a>
 	<a type="button" class="button" href="<?php 
-echo  esc_url( $updateUrl ) ;
+echo esc_url( $updateUrl );
 ?>" <?php 
-echo  esc_attr( $disabled ) ;
+echo esc_attr( $disabled );
 ?>>
 		<?php 
 esc_html_e( 'Update paths', 'premmerce-filter' );
@@ -51,18 +51,18 @@ require __DIR__ . '/../seo/form.php';
 $rulesTable->search_box( __( 'Search', 'premmerce-filter' ), 'search' );
 ?>
 			<input type="hidden" name="page" value="<?php 
-echo  esc_attr( $getPage ) ;
+echo esc_attr( $getPage );
 ?>">
 			<input type="hidden" name="tab" value="<?php 
-echo  esc_attr( $getTab ) ;
+echo esc_attr( $getTab );
 ?>">
 		</form>
 		<form method="GET">
 			<input type="hidden" name="page" value="<?php 
-echo  esc_attr( $getPage ) ;
+echo esc_attr( $getPage );
 ?>">
 			<input type="hidden" name="tab" value="<?php 
-echo  esc_attr( $getTab ) ;
+echo esc_attr( $getTab );
 ?>">
 			<?php 
 $rulesTable->display();

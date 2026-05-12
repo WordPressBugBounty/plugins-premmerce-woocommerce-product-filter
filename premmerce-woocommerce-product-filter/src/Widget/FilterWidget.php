@@ -2,57 +2,51 @@
 
 namespace Premmerce\Filter\Widget;
 
-use  WP_Widget ;
-use  Premmerce\Filter\FilterPlugin ;
-use  Premmerce\Filter\Filter\Container ;
-class FilterWidget extends WP_Widget
-{
-    const  FILTER_WIDGET_ID = 'premmerce_filter_filter_widget' ;
+use WP_Widget;
+use Premmerce\Filter\FilterPlugin;
+use Premmerce\Filter\Filter\Container;
+class FilterWidget extends WP_Widget {
+    const FILTER_WIDGET_ID = 'premmerce_filter_filter_widget';
+
     /**
      * FilterWidget constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct( self::FILTER_WIDGET_ID, __( 'Premmerce Filter', 'premmerce-filter' ), array(
             'description' => __( 'Product attributes filter', 'premmerce-filter' ),
         ) );
     }
-    
+
     /**
      * Render widget
      *
      * @param array $args
      * @param array $instance
      */
-    public function widget( $args, $instance )
-    {
-        
+    public function widget( $args, $instance ) {
         if ( apply_filters( 'premmerce_product_filter_active', false ) ) {
             $data = self::getFilterWidgetContent( $args, $instance );
             do_action( 'premmerce_product_filter_render', $data );
         }
-    
     }
-    
+
     /**
      * Get Filter Widget data
      *
      * @param array $args
      * @param array $instance
      */
-    public static function getFilterWidgetContent( $args = array(), $instance = array() )
-    {
+    public static function getFilterWidgetContent( $args = array(), $instance = array() ) {
         $items = Container::getInstance()->getItemsManager()->getFilters();
         $items = apply_filters( 'premmerce_product_filter_items', $items );
         $settings = get_option( FilterPlugin::OPTION_SETTINGS, array() );
         $style = ( isset( $instance['style'] ) ? $instance['style'] : 'default' );
-        $showFilterButton = !empty($settings['show_filter_button']);
+        $showFilterButton = !empty( $settings['show_filter_button'] );
         //default styles
         $border = '';
         $boldTitle = '';
         $titleAppearance = '';
         //premmerce styles
-        
         if ( 'default' !== $style ) {
             //border styles
             if ( isset( $instance['add_border'] ) && ('on' === $instance['add_border'] || true === $instance['add_border']) || 'premmerce' === $style ) {
@@ -66,7 +60,6 @@ class FilterWidget extends WP_Widget
                 $titleAppearance = 'uppercase';
             }
         }
-        
         $data = array(
             'args'             => $args,
             'style'            => $style,
@@ -80,7 +73,7 @@ class FilterWidget extends WP_Widget
         );
         return $data;
     }
-    
+
     /**
      * Update
      *
@@ -89,14 +82,13 @@ class FilterWidget extends WP_Widget
      *
      * @return array
      */
-    public function update( $new_instance, $old_instance )
-    {
+    public function update( $new_instance, $old_instance ) {
         $instance = array();
         $instance['title'] = filter_var( $new_instance['title'], FILTER_SANITIZE_STRING );
         $instance['style'] = filter_var( $new_instance['style'], FILTER_SANITIZE_STRING );
         return $instance;
     }
-    
+
     /**
      * Form
      *
@@ -104,8 +96,7 @@ class FilterWidget extends WP_Widget
      *
      * @return string|void
      */
-    public function form( $instance )
-    {
+    public function form( $instance ) {
         $settings = get_option( FilterPlugin::OPTION_SETTINGS, array() );
         //check plan
         $premiumOnly = ( !premmerce_pwpf_fs()->can_use_premium_code() ? __( ' (Premium)', 'premmerce-filter' ) : '' );
@@ -154,7 +145,7 @@ class FilterWidget extends WP_Widget
             'widget'               => $this,
         ) );
     }
-    
+
     /**
      * Render ColorPicker for widget
      */
@@ -166,8 +157,7 @@ class FilterWidget extends WP_Widget
         $class,
         $type = 'text',
         $plan = 'premium'
-    )
-    {
+    ) {
         $checkbox = '<p><label for="%1$s">%2$s</label><input class="widefat %3$s %4$s" type="%5$s" name="%6$s" id="%7$s" value="%8$s" %9$s></p>';
         $fieldID = esc_attr( $widget->get_field_id( $id ) );
         $disabled = '';
@@ -188,7 +178,7 @@ class FilterWidget extends WP_Widget
             esc_attr( $disabled )
         );
     }
-    
+
     /**
      * Render checkbox for widget
      */
@@ -198,8 +188,7 @@ class FilterWidget extends WP_Widget
         $title,
         $value,
         $plan
-    )
-    {
+    ) {
         $checked = checked( $value, 'on', false );
         $fieldID = esc_attr( $widget->get_field_id( $id ) );
         $disabled = '';
@@ -217,7 +206,7 @@ class FilterWidget extends WP_Widget
             esc_attr( $title )
         );
     }
-    
+
     /**
      * Render select for widget
      */
@@ -229,8 +218,7 @@ class FilterWidget extends WP_Widget
         $options,
         $class = '',
         $plan = 'premium'
-    )
-    {
+    ) {
         $fieldID = esc_attr( $widget->get_field_id( $id ) );
         $disabled = '';
         //if it is not premium plan - disable select

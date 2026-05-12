@@ -149,7 +149,7 @@ class FilterPlugin implements PluginInterface
         $valid = count($this->validateRequiredPlugins()) === 0;
 
         if ($valid) {
-            ( new Updater($this->fileManager) )->update();
+            (new Updater($this->fileManager))->update();
             $filter = new Filter(Container::getInstance());
 
             do_action('premmerce_filter_core_loaded', $filter);
@@ -204,7 +204,7 @@ class FilterPlugin implements PluginInterface
             add_option(self::OPTION_SETTINGS, $defaultOptions);
         }
 
-        ( new Updater($this->fileManager) )->installDb();
+        (new Updater($this->fileManager))->installDb();
     }
 
     /**
@@ -434,7 +434,7 @@ class FilterPlugin implements PluginInterface
             $isRender = true;
         }
 
-        $filterBlock = ( new FilterWidgetShortcodes($this->fileManager) )->premmerceShortcodeFilter($attr, 'filterblock', $isRender);
+        $filterBlock = (new FilterWidgetShortcodes($this->fileManager))->premmerceShortcodeFilter($attr, 'filterblock', $isRender);
         $filterBlock = str_replace(array("\n", "\t"), '', $filterBlock);
         $filterBlock = str_replace(array('for='), ' for=', $filterBlock);
         return $filterBlock;

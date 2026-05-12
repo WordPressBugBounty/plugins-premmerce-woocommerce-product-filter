@@ -46,6 +46,7 @@ class PriceQuery
     public function getPrices()
     {
         if (is_null($this->prices)) {
+
             global $wpdb;
 
             $metaQuery = $this->queryHelper->getMetaQuerySql(array('price_filter'));

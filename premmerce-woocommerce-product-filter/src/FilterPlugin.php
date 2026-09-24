@@ -168,19 +168,40 @@ class FilterPlugin implements PluginInterface
         add_action('init', array( $this, 'register_blocks' ));
         add_action('admin_init', array($this, 'checkRequirePlugins'));
         add_action('comment_post', array($this, 'clearRatingCountTransients'));
-        premmerce_pwpf_fs()->add_filter('freemius_pricing_js_path', array($this, 'cutomFreemiusPricingPage'));
+        add_action('admin_init', array($this, 'removePricingPageConfigOverrides'));
         add_action('before_woocommerce_init', array( $this, 'declareHPOSCompatibility' ));
     }
 
     /**
-     * Add custom Freemius Pricing Page js file.
+     * Stop the query string overriding the Freemius pricing page config.
+     *
+     * Freemius merges $_GET over the pricing app config, so a crafted link could
+     * point request_handler_url or contact_url at attacker-controlled content.
      */
-    public function cutomFreemiusPricingPage($default_pricing_js_path)
+    public function removePricingPageConfigOverrides()
     {
-        $pluginDir       = $this->fileManager->getPluginDirectory();
-        $pricing_js_path = $pluginDir . '/assets/admin/js/pricing-page/freemius-pricing.js';
+        if (!premmerce_pwpf_fs()->is_admin_page('pricing')) {
+            return;
+        }
 
-        return $pricing_js_path;
+        $keys = array(
+            'contact_url',
+            'is_production',
+            'menu_slug',
+            'mode',
+            'fs_wp_endpoint_url',
+            'request_handler_url',
+            'selector',
+            'unique_affix',
+            'show_annual_in_monthly',
+            'license',
+            'plugin_icon',
+            'disable_single_package',
+        );
+
+        foreach ($keys as $key) {
+            unset($_GET[$key], $_REQUEST[$key]);
+        }
     }
 
     /**

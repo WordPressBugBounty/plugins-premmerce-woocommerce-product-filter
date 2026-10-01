@@ -10,7 +10,6 @@ use Premmerce\Filter\Admin\Tabs\Taxonomy;
 use Premmerce\Filter\Admin\Tabs\SimpleTab;
 use Premmerce\Filter\Admin\Tabs\Attributes;
 use Premmerce\Filter\Admin\Tabs\TabRenderer;
-use Premmerce\Filter\Integration\YITHBrands;
 use Premmerce\SDK\V2\FileManager\FileManager;
 use Premmerce\SDK\V2\Notifications\AdminNotifier;
 use Premmerce\Filter\Admin\Tabs\BundleAndSave;
@@ -64,7 +63,6 @@ class Admin {
         $this->fileManager = $fileManager;
         $this->notifier = new AdminNotifier();
         $this->tabRenderer = new TabRenderer($this->fileManager);
-        ( new YITHBrands() )->init();
         add_action( 'init', function () {
             $this->initBanner();
             $this->initTabs();

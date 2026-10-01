@@ -12,6 +12,7 @@ use Premmerce\SDK\V2\FileManager\FileManager;
 use Premmerce\SDK\V2\Notifications\AdminNotifier;
 use Premmerce\Filter\Admin\Tabs\Base\BaseSettings;
 use Premmerce\Filter\Shortcodes\FilterWidgetShortcodes;
+use Premmerce\Filter\Integration\YITHBrands;
 
 /**
  * Class FilterPlugin
@@ -159,6 +160,8 @@ class FilterPlugin implements PluginInterface
             } else {
                 new Frontend(Container::getInstance());
             }
+
+            $this->loadIntegrations();
         }
     }
 
@@ -501,5 +504,13 @@ class FilterPlugin implements PluginInterface
             $this->fileManager->getMainFile(),
             true
         );
+    }
+
+    /**
+     * Initialize integrations
+     */
+    private function loadIntegrations()
+    {
+        (new YITHBrands())->init();
     }
 }

@@ -3,7 +3,7 @@
  * Plugin Name:       Premmerce Product Filter for WooCommerce
  * Plugin URI:        https://premmerce.com/woocommerce-product-filter/
  * Description:       Premmerce Product Filter for WooCommerce plugin is a convenient and flexible tool for managing filters for WooCommerce products.
- * Version:     3.7.5
+ * Version:     3.8.1
  *  *
  * Author:            Premmerce
  * Author URI:        https://premmerce.com
@@ -14,7 +14,7 @@
  *
  * Tested up to: 7.1
  * WC requires at least: 3.6.0
- * WC tested up to: 8.3.1
+ * WC tested up to: 11.1.2
  *
  *  *
  *

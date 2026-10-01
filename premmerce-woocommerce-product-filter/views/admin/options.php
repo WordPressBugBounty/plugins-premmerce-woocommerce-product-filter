@@ -37,7 +37,12 @@ if (! defined('ABSPATH')) {
 		endif;
 		?>
 	</h2>
-
-	<?php echo wp_kses_data($current->render()); ?>
+	<?php
+		$data = $current->render();
+		if ( ! $data ) {
+			$data = '';
+		}
+	?>
+	<?php echo wp_kses_data( $data ); ?>
 
 </div>

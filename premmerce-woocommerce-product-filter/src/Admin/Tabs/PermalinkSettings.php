@@ -80,6 +80,12 @@ class PermalinkSettings extends BaseSettings
                         'placeholder' => $defaultPrefix,
                         'title'       => __('Attribute prefix', 'premmerce-filter'),
                     ),
+                    'no_slug_prefix' => array(
+                        'plan'  => FilterPlugin::PLAN_PREMIUM,
+                        'type'  => 'checkbox',
+                        'label' => __('Don\'t use an attribute prefix', 'premmerce-filter'),
+                        'help'  => __('Filter URLs will use /color-red/ instead of /attribute-color-red/. This changes the URLs of filtered pages that are already indexed.', 'premmerce-filter'),
+                    ),
                     'or_separator'  => array(
                         'plan'        => FilterPlugin::PLAN_PREMIUM,
                         'type'        => 'text',
@@ -94,6 +100,9 @@ class PermalinkSettings extends BaseSettings
             $taxonomy_instance = get_taxonomy($taxonomy);
             $taxonomyName      = $taxonomy_instance->labels->singular_name;
             $slugPrefix        = $this->getOption('slug_prefix') ? $this->getOption('slug_prefix') : $defaultPrefix;
+            if ($this->getOption('no_slug_prefix')) {
+                $slugPrefix = '';
+            }
             $placeHolder       = $slugPrefix . $taxonomy . '-';
 
 

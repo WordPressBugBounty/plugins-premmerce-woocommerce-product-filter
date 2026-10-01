@@ -71,7 +71,8 @@ class SliderFilter extends TaxonomyFilter
      */
     public function getActiveItems($terms = array())
     {
-        $url = !empty($_SERVER['REQUEST_URI']) ? sanitize_text_field($_SERVER['REQUEST_URI']) : '';
+        // Keeps a non-Latin (percent-encoded) path, which sanitize_text_field() strips (#193).
+        $url = !empty($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
 
         $values = $this->getSelectedValues();
 
@@ -79,13 +80,13 @@ class SliderFilter extends TaxonomyFilter
 
         if (array_key_exists('min_selected', $values)) {
             $link            = remove_query_arg('min_' . $this->getSlug(), $url);
-            $title           = sprintf(esc_attr_('%1$s from %2$s', 'premmerce-filter'), $this->getLabel(), $values['min_selected']);
+            $title           = sprintf(esc_attr__('%1$s from %2$s', 'premmerce-filter'), $this->getLabel(), $values['min_selected']);
             $activeFilters[] = array('title' => $title, 'link' => esc_url($link));
         }
 
         if (array_key_exists('max_selected', $values)) {
             $link            = remove_query_arg('max_' . $this->getSlug(), $url);
-            $title           = sprintf(esc_attr_('%1$s to %2$s', 'premmerce-filter'), $this->getLabel(), $values['max_selected']);
+            $title           = sprintf(esc_attr__('%1$s to %2$s', 'premmerce-filter'), $this->getLabel(), $values['max_selected']);
             $activeFilters[] = array('title' => $title, 'link' => esc_url($link));
         }
 

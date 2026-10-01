@@ -14,11 +14,16 @@ use Premmerce\Filter\FilterPlugin;
  * @var array $paginationArgs
  *
 */
+
+$paginate_links = paginate_links( $paginationArgs );
+if ( ! $paginate_links ) {
+	$paginate_links = '';
+}
 ?>
 <h2><?php echo esc_attr($taxonomy->label); ?></h2>
 <div class="tablenav top">
 	<?php require __DIR__ . '/actions.php'; ?>
-	<div class="tablenav-pages premmerce-filter-pagination"><?php echo wp_kses(paginate_links($paginationArgs), FilterPlugin::HTML_TAGS); ?></div>
+	<div class="tablenav-pages premmerce-filter-pagination"><?php echo wp_kses( $paginate_links, FilterPlugin::HTML_TAGS ); ?></div>
 </div>
 
 <?php if ($prevId) : ?>
@@ -81,5 +86,5 @@ use Premmerce\Filter\FilterPlugin;
 
 <div class="tablenav bottom">
 	<?php require __DIR__ . '/actions.php'; ?>
-	<div class="tablenav-pages premmerce-filter-pagination"><?php echo wp_kses(paginate_links($paginationArgs), FilterPlugin::HTML_TAGS); ?></div>
+	<div class="tablenav-pages premmerce-filter-pagination"><?php echo wp_kses( $paginate_links, FilterPlugin::HTML_TAGS ); ?></div>
 </div>

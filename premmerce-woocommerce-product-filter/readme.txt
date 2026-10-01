@@ -4,7 +4,7 @@ Contributors: premmerce, freemius
 Tags: product filter, WooCommerce product filter, WooCommerce filter,  Premmerce, attributes filter
 Requires at least: 4.8
 Tested up to: 7.1
-Stable tag: 3.7.5
+Stable tag: 3.8.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -144,6 +144,29 @@ Please report security bugs found in the source code of this plugin through the 
 
 
 == Changelog ==
+
+= 3.8.1 (1st October 2026) =
+
+* Fix: Attribute filter URLs no longer 404 when a taxonomy prefix, such as a brand prefix, is set
+
+= 3.8.0 (1st October 2026) =
+
+* New: "Don't use an attribute prefix" option builds filter URLs without the "attribute-" prefix. Old prefixed URLs redirect to the new ones; turn that off with the premmerce_filter_redirect_prefixed_urls filter
+* New: SEO rules can be translated with WPML String Translation
+* Fix: The "Show in stock" filter can be displayed as a dropdown
+* Fix: With "Use AJAX" on, the filter button no longer reloads the page
+* Fix: Filtering with AJAX on no longer returns a fatal error
+* Fix: YITH Brands render correctly in SEO rule variables
+* Fix: WooCommerce brands whose slug starts with a digit can be filtered
+* Fix: Filter counts are right when a price range is set
+* Fix: The price filter keeps the site's port and non-Latin category paths
+* Fix: Child categories follow the sort order when "Enable Category Hierarchy" is on
+* Fix: Categories can be chosen under "Use taxonomies" with WooCommerce Product Add-ons active
+* Fix: The filter works when the home page is the shop page, including on later pages
+* Fix: Premium filter types can no longer be picked in the Attributes tab without a licence
+* Fix: PHP 8.1 and 8.2 deprecation notices on the admin tabs, from the filter widget, and from the stock, rating and on-sale filters
+* Update: Freemius SDK updated to 2.13.4
+* Improvement: WooCommerce 11.1 compatibility
 
 = 3.7.5 (24th September 2026) =
 

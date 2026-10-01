@@ -15,7 +15,11 @@ if (! defined('ABSPATH')) {
 		<?php if (is_array($actionTitle)) : ?>
 		<optgroup label="<?php echo esc_attr($key); ?>">
 			<?php foreach ($actionTitle as $itemKey => $itemTitle) : ?>
-			<option value="<?php echo esc_attr($itemKey); ?>">
+				<?php
+				$disabled = '';
+				$disabled = ( ! premmerce_pwpf_fs()->can_use_premium_code() && isset($itemTitle['plan']) && 'premium' === $itemTitle['plan'] ) ? 'disabled' : '';
+				?>
+			<option value="<?php echo esc_attr($itemKey); ?>" <?php echo esc_attr($disabled); ?>>
 				<?php echo esc_attr($itemTitle['text']); ?>
 			</option>
 			<?php endforeach; ?>

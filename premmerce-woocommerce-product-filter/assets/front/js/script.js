@@ -222,7 +222,12 @@
 	});
 
 	$(document).on('click', '[data-filter-button]', function (e) {
-		window.location.href = $('[data-filter-button]').data().filterUrl;
+		var link = $('[data-filter-button]').data().filterUrl;
+		if (useAjax && link) {
+			widgetLoop(link, 'reload');
+		} else {
+			window.location.href = link;
+		}
 	});
 
 	/**

@@ -83,7 +83,8 @@ class PriceFilter extends BaseFilter
      */
     public function getActiveItems()
     {
-        $url = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field($_SERVER['REQUEST_URI']) : '';
+        // Keeps a non-Latin (percent-encoded) path, which sanitize_text_field() strips (#193).
+        $url = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
 
         $values = $this->getSelectedValues();
 

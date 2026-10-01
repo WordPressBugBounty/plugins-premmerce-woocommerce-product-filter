@@ -240,11 +240,13 @@ class Filter {
      * @return string
      */
     public function filterFormAction() {
-        $path = ( !empty( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER['REQUEST_URI'] ) : '' );
+        // esc_url_raw(), not sanitize_text_field(): that strips percent-encoded characters,
+        // and with them the slug of a non-Latin category (#193).
+        $path = ( !empty( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' );
         $parts = explode( '?', $path );
         $path = $parts[0];
         $url = parse_url( home_url() );
-        $schemeAndHost = $url['scheme'] . '://' . $url['host'];
+        $schemeAndHost = $url['scheme'] . '://' . $url['host'] . (( isset( $url['port'] ) ? ':' . $url['port'] : '' ));
         $formAction = preg_replace( '%\\/page/[0-9]+%', '', $schemeAndHost . $path );
         return $formAction;
     }
@@ -285,6 +287,9 @@ class Filter {
         $requestUri = ( !empty( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER['REQUEST_URI'] ) : '' );
         $homePath = ( parse_url( get_home_url(), PHP_URL_PATH ) !== null ? parse_url( get_home_url(), PHP_URL_PATH ) : '/' );
         $currentPath = parse_url( $requestUri, PHP_URL_PATH );
+        // Remove any "/page/n" pagination part from the current URL path.
+        // This ensures that paginated versions of the homepage are treated as the main page.
+        $currentPath = preg_replace( '/\\/page\\/\\d+\\/?$/', '/', $currentPath );
         return $currentPath === $homePath;
     }
 

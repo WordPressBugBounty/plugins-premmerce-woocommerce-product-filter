@@ -15,6 +15,10 @@ use Premmerce\Filter\FilterPlugin;
  * @var array $premiumAttributes
  * @var array $paginationArgs
  */
+$paginate_links = paginate_links( $paginationArgs );
+if ( !$paginate_links ) {
+    $paginate_links = '';
+}
 ?>
 
 <h2><?php 
@@ -27,7 +31,7 @@ esc_attr_e( 'Attributes', 'premmerce-filter' );
 require __DIR__ . '/actions.php';
 ?>
 	<div class="tablenav-pages premmerce-filter-pagination"><?php 
-echo wp_kses( paginate_links( $paginationArgs ), FilterPlugin::HTML_TAGS );
+echo wp_kses( $paginate_links, FilterPlugin::HTML_TAGS );
 ?></div>
 </div>
 
@@ -137,7 +141,7 @@ if ( count( $attributes ) > 0 ) {
 					<?php 
         foreach ( $selectTypes as $key => $selectType ) {
             $disabled = '';
-            echo ( !premmerce_pwpf_fs()->can_use_premium_code() && 'premium' === $selectType['plan'] ? 'disabled' : '' );
+            $disabled = ( !premmerce_pwpf_fs()->can_use_premium_code() && 'premium' === $selectType['plan'] ? 'disabled' : '' );
             ?>
 					<option <?php 
             echo selected( $key, $attributesConfig[$attrId]['type'] );
@@ -300,7 +304,7 @@ if ( $nextId ) {
 require __DIR__ . '/actions.php';
 ?>
 	<div class="tablenav-pages premmerce-filter-pagination"><?php 
-echo wp_kses( paginate_links( $paginationArgs ), FilterPlugin::HTML_TAGS );
+echo wp_kses( $paginate_links, FilterPlugin::HTML_TAGS );
 ?></div>
 </div>
 

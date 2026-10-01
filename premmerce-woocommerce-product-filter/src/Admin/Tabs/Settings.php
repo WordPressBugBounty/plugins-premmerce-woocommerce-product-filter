@@ -181,9 +181,14 @@ class Settings extends BaseSettings {
         $taxonomies = FilterPlugin::DEFAULT_TAXONOMIES;
         $taxonomyOptions = array();
         foreach ( $taxonomies as $taxonomy ) {
-            if ( !taxonomy_is_product_attribute( $taxonomy ) && taxonomy_exists( $taxonomy ) ) {
-                $taxonomyOptions[$taxonomy] = get_taxonomy( $taxonomy )->labels->singular_name;
+            if ( taxonomy_is_product_attribute( $taxonomy ) || !taxonomy_exists( $taxonomy ) ) {
+                continue;
             }
+            $taxonomy_object = get_taxonomy( $taxonomy );
+            if ( !$taxonomy_object->public ) {
+                continue;
+            }
+            $taxonomyOptions[$taxonomy] = $taxonomy_object->labels->singular_name;
         }
         $settings['taxonomies'] = array(
             'label'  => __( 'Taxonomies', 'premmerce-filter' ),

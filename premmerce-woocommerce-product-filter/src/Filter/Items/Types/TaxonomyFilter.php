@@ -199,26 +199,34 @@ class TaxonomyFilter extends BaseFilter
      */
     protected function getCategoryChildren($term)
     {
-        $taxonomyChildren = array_map('get_term', get_term_children($term->term_id, $this->getSlug()));
+        $options = get_option(FilterPlugin::OPTION_SETTINGS, array());
+        if (empty($options['enable_category_hierarchy'])) {
+            return array();
+        }
+
+        $visibleTermIds = array_keys($this->getSettings());
+        $args = array(
+            'parent'     => $term->term_id,
+            'taxonomy'   => $this->taxonomy->name,
+            'orderby'    => 'include',
+            'include'    => $visibleTermIds,
+            'hide_empty' => isset($options['hide_empty']) && ! empty($options['hide_empty']) ? true : false,
+        );
+
         $children         = array();
-        $settings         = get_option(FilterPlugin::OPTION_SETTINGS, array());
-        $visibleTermIds   = array_keys($this->getSettings());
+        $taxonomyChildren = get_terms($args);
 
-        if (!empty($settings['enable_category_hierarchy'])) {
-            foreach ($taxonomyChildren as $taxonomyChild) {
-                if (($this->hideEmpty && 0 === $taxonomyChild->count) || !in_array($taxonomyChild->term_id, $visibleTermIds)) {
-                    continue;
-                }
+        if (! is_array($taxonomyChildren)) {
+            return array();
+        }
 
-                if ($taxonomyChild->parent === $term->term_id) {
-                    $taxonomyChild->checked  = in_array($taxonomyChild->slug, $this->getSelectedValues(), true);
-                    $taxonomyChild->link     = $this->getValueLink($taxonomyChild->slug);
-                    $taxonomyChild->isChild  = true;
-                    $taxonomyChild->products = array();
-                    $this->processTerm($taxonomyChild);
-                    $children[] = $taxonomyChild;
-                }
-            }
+        foreach ($taxonomyChildren as $taxonomyChild) {
+            $taxonomyChild->checked  = in_array($taxonomyChild->slug, $this->getSelectedValues(), true);
+            $taxonomyChild->link     = $this->getValueLink($taxonomyChild->slug);
+            $taxonomyChild->isChild  = true;
+            $taxonomyChild->products = array();
+            $this->processTerm($taxonomyChild);
+            $children[] = $taxonomyChild;
         }
 
         return $children;
@@ -297,7 +305,37 @@ class TaxonomyFilter extends BaseFilter
                 'hide_empty'       => false
             );
 
+            $taxQuery   = $this->removeWooCommerceBrandsClause($taxQuery);
             $taxQuery[] = $taxonomyQuery;
+        }
+
+        return $taxQuery;
+    }
+
+    /**
+     * WooCommerce Brands reads filter_product_brand too, but as term IDs: it runs absint()
+     * over our slugs and adds its own clause (no 'field', so by term ID). A slug that starts
+     * with a digit, such as 999-brand, becomes term ID 999 and no products match (#195).
+     * When we filter by brand ourselves, drop that clause.
+     *
+     * @param array $taxQuery
+     *
+     * @return array
+     */
+    private function removeWooCommerceBrandsClause($taxQuery)
+    {
+        if ('product_brand' !== $this->getId()) {
+            return $taxQuery;
+        }
+
+        foreach ($taxQuery as $key => $clause) {
+            if (is_array($clause)
+                && isset($clause['taxonomy'])
+                && 'product_brand' === $clause['taxonomy']
+                && !isset($clause['field'])
+            ) {
+                unset($taxQuery[$key]);
+            }
         }
 
         return $taxQuery;

@@ -95,9 +95,8 @@ class SeoModel extends Query {
             }
             $id = ( empty( $data['id'] ) ? null : $data['id'] );
             $terms = $data['terms'];
-            //if it is not premium plan - return null
             if ( !premmerce_pwpf_fs()->can_use_premium_code() ) {
-                return null;
+                return new WP_Error('licence_required', __( 'SEO rules need an active licence', 'premmerce-filter' ));
             }
         }
     }
@@ -182,8 +181,7 @@ class SeoModel extends Query {
         if ( empty( $array['term_id'] ) ) {
             return new WP_Error('category_required', __( 'Category is required', 'premmerce-filter' ));
         }
-        $counter = $this->getCountFromRule( $array );
-        if ( $validatee_count && 0 === $counter ) {
+        if ( $validatee_count && !$this->ruleHasProducts( $array ) ) {
             return null;
         }
         $path = $this->generatePath( $array );
@@ -198,12 +196,12 @@ class SeoModel extends Query {
     }
 
     /**
-     * Get Count From Rule
+     * Whether any published product is in the rule's category and terms
      *
      * @param  array $rule
-     * @return int
+     * @return bool
      */
-    private function getCountFromRule( $rule ) {
+    private function ruleHasProducts( $rule ) {
         $taxQuery = array(
             'relation' => 'AND',
         );
@@ -219,13 +217,19 @@ class SeoModel extends Query {
                 'terms'    => $ids,
             );
         }
+        // One ID is enough: loading every product, with its meta and terms, ran large
+        // categories out of memory (#115).
         $products = new \WP_Query(array(
-            'post_type'      => array('product'),
-            'post_status'    => 'publish',
-            'posts_per_page' => -1,
-            'tax_query'      => $taxQuery,
+            'post_type'              => array('product'),
+            'post_status'            => 'publish',
+            'posts_per_page'         => 1,
+            'fields'                 => 'ids',
+            'no_found_rows'          => true,
+            'update_post_meta_cache' => false,
+            'update_post_term_cache' => false,
+            'tax_query'              => $taxQuery,
         ));
-        return $products->post_count;
+        return $products->post_count > 0;
     }
 
     /**

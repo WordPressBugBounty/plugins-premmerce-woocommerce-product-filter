@@ -41,7 +41,7 @@ class ActiveFilterWidget extends WP_Widget
     {
         global $wp;
 
-        $url = !empty($_SERVER['REQUEST_URI']) ? sanitize_text_field($_SERVER['REQUEST_URI']) : '';
+        $url = !empty($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
 
         $items = Container::getInstance()->getItemsManager()->getActiveFilters();
         $items = apply_filters('premmerce_product_filter_active_items', $items);

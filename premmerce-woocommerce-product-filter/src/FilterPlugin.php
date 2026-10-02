@@ -253,6 +253,7 @@ class FilterPlugin implements PluginInterface
         delete_option(self::OPTION_SETTINGS);
         delete_option(self::OPTION_PERMALINKS_SETTINGS);
         delete_option(Updater::DB_OPTION);
+        delete_option(Updater::SEO_SCHEMA_OPTION);
     }
 
     /**
@@ -474,6 +475,20 @@ class FilterPlugin implements PluginInterface
         $marketPlace = 'freemius';
 
         return $marketPlace;
+    }
+
+    /**
+     * Taxonomies the free version offers under Settings > Use taxonomies: the defaults plus
+     * any brand taxonomy an integration adds, such as YITH Brands' yith_product_brand (#147).
+     * The premium version offers every public product taxonomy.
+     *
+     * @return string[]
+     */
+    public static function getFreeTaxonomies()
+    {
+        $brandTaxonomies = (array) apply_filters('premmerce_product_filter_brand_taxonomies', array('product_brand'));
+
+        return array_values(array_unique(array_merge(self::DEFAULT_TAXONOMIES, $brandTaxonomies)));
     }
 
     /**

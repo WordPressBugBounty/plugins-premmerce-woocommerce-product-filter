@@ -178,7 +178,7 @@ class Settings extends BaseSettings {
      */
     public function initSettings() {
         register_setting( $this->group, $this->optionName );
-        $taxonomies = FilterPlugin::DEFAULT_TAXONOMIES;
+        $taxonomies = FilterPlugin::getFreeTaxonomies();
         $taxonomyOptions = array();
         foreach ( $taxonomies as $taxonomy ) {
             if ( taxonomy_is_product_attribute( $taxonomy ) || !taxonomy_exists( $taxonomy ) ) {

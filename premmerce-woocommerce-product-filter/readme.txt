@@ -4,7 +4,7 @@ Contributors: premmerce, freemius
 Tags: product filter, WooCommerce product filter, WooCommerce filter,  Premmerce, attributes filter
 Requires at least: 4.8
 Tested up to: 7.1
-Stable tag: 3.8.1
+Stable tag: 3.8.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -144,6 +144,17 @@ Please report security bugs found in the source code of this plugin through the 
 
 
 == Changelog ==
+
+= 3.8.2 (2nd October 2026) =
+
+* Fix: The price slider's range follows attribute filters on stores using WooCommerce's attribute lookup table
+* Fix: Filter URLs, SEO rules and active filter links work on categories and attribute values with non-Latin slugs, such as Cyrillic
+* Fix: SEO rules save on sites whose SEO table was out of date, and a failed save now says why instead of "Rule does not contains products"
+* Fix: The SEO Rules table lists rules when Polylang is active
+* Fix: The Yoast and Rank Math sitemap index links each SEO rules sitemap page once
+* Fix: YITH Brands can be chosen under "Use taxonomies" in the free version
+* Fix: Empty parent categories no longer show with category hierarchy on, and parent counts include products in every subcategory level
+* Fix: Saving or generating SEO rules for a large category no longer runs out of memory
 
 = 3.8.1 (1st October 2026) =
 

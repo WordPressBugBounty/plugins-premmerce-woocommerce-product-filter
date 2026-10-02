@@ -124,7 +124,8 @@ class ItemRenderer {
             $settings = get_option( FilterPlugin::OPTION_SETTINGS, array() );
             $expandCategoryHierarchy = !empty( $settings['expand_category_hierarchy'] );
             foreach ( $term->children as $child ) {
-                if ( 0 === $child->count && !empty( $settings['hide_empty'] ) ) {
+                // An empty child still shows while it, or a child below it, is ticked, so it can be unticked (#154).
+                if ( 0 === $child->count && !empty( $settings['hide_empty'] ) && !self::isOrHasCheckedTerm( $child ) ) {
                     continue;
                 }
                 $fileManager->includeTemplate( "frontend/types/parts/{$attribute->getType()}.php", array(
@@ -138,6 +139,27 @@ class ItemRenderer {
                 ) );
             }
         }
+    }
+
+    /**
+     * Whether a term, or any term below it, is ticked.
+     *
+     * @param object $term
+     *
+     * @return bool
+     */
+    private static function isOrHasCheckedTerm( $term ) {
+        if ( !empty( $term->checked ) ) {
+            return true;
+        }
+        if ( !empty( $term->children ) && is_array( $term->children ) ) {
+            foreach ( $term->children as $child ) {
+                if ( self::isOrHasCheckedTerm( $child ) ) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

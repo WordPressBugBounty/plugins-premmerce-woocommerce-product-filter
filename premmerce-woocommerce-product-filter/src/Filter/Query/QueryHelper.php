@@ -61,6 +61,9 @@ class QueryHelper
         foreach (WC()->query->get_tax_query() as $val) {
             $taxQuery[] = $val;
         }
+        foreach ($this->getLookupTableAttributeTaxQuery() as $val) {
+            $taxQuery[] = $val;
+        }
 
         if (! empty($exceptTaxonomies)) {
             foreach ($taxQuery as $key => $query) {
@@ -73,6 +76,34 @@ class QueryHelper
         $taxQuery = new WP_Tax_Query($taxQuery);
 
         return $taxQuery->get_sql($this->wpdb->posts, 'ID');
+    }
+
+    /**
+     * The chosen attributes as tax queries, when WooCommerce filters by its attributes
+     * lookup table (the default since WooCommerce 6.1). It then narrows the products with
+     * SQL clauses and leaves the attributes out of the main tax query, so queries built
+     * from that tax query, like the price slider's range, would ignore them.
+     *
+     * @return array
+     */
+    private function getLookupTableAttributeTaxQuery()
+    {
+        if ('yes' !== get_option('woocommerce_attribute_lookup_enabled')) {
+            return array();
+        }
+
+        $taxQuery = array();
+        foreach (WC_Query::get_layered_nav_chosen_attributes() as $taxonomy => $data) {
+            $taxQuery[] = array(
+                'taxonomy'         => $taxonomy,
+                'field'            => 'slug',
+                'terms'            => $data['terms'],
+                'operator'         => 'and' === $data['query_type'] ? 'AND' : 'IN',
+                'include_children' => false,
+            );
+        }
+
+        return $taxQuery;
     }
 
     /**

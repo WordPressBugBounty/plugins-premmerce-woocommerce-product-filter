@@ -412,6 +412,13 @@ class ItemsManager
     private function setCounter($terms, $queriedProducts, $taxonomyProducts)
     {
         foreach ($terms as $k => $term) {
+            // Children first: getTermCount() adds each child's products to its parent, so a
+            // child has to have its own children's by then, or a grandchild's products never
+            // reach the top category's count (#154).
+            if (!empty($term->children)) {
+                $this->setCounter($term->children, $queriedProducts, $taxonomyProducts);
+            }
+
             $count = apply_filters(
                 'premmerce_filter_term_count_' . $term->taxonomy,
                 $this->getTermCount($term, $queriedProducts, $taxonomyProducts),
@@ -421,10 +428,6 @@ class ItemsManager
             );
 
             $terms[$k]->count = $count;
-
-            if (!empty($term->children)) {
-                $this->setCounter($term->children, $queriedProducts, $taxonomyProducts);
-            }
         }
     }
 

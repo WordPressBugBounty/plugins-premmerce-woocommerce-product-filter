@@ -284,7 +284,7 @@ class Filter {
      * @return bool
      */
     private function isMainPage() {
-        $requestUri = ( !empty( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER['REQUEST_URI'] ) : '' );
+        $requestUri = ( !empty( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' );
         $homePath = ( parse_url( get_home_url(), PHP_URL_PATH ) !== null ? parse_url( get_home_url(), PHP_URL_PATH ) : '/' );
         $currentPath = parse_url( $requestUri, PHP_URL_PATH );
         // Remove any "/page/n" pagination part from the current URL path.

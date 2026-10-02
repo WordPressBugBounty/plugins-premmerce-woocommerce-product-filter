@@ -142,17 +142,38 @@ class TaxonomyFilter extends BaseFilter
         $filters = array();
 
         foreach ($this->getTerms() as $termKey => $term) {
-            $displayCurrent = !empty($term->children) || apply_filters(
-                'premmerce_filter_display_current_term_filter',
-                false
-            );
-
-            if (!$this->hideEmpty || $term->count || $term->checked || $displayCurrent) {
+            // A parent's count includes its children's products, so an empty parent has no
+            // products below it either; it only stays for a ticked child (#154).
+            if (!$this->hideEmpty || $term->count || $term->checked || $this->hasCheckedChild($term)
+                || apply_filters('premmerce_filter_display_current_term_filter', false)
+            ) {
                 $filters[] = $term;
             }
         }
 
         return $filters;
+    }
+
+    /**
+     * Has Checked Child
+     *
+     * @param object $term
+     *
+     * @return bool
+     */
+    private function hasCheckedChild($term)
+    {
+        if (empty($term->children)) {
+            return false;
+        }
+
+        foreach ($term->children as $child) {
+            if (!empty($child->checked) || $this->hasCheckedChild($child)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -10,6 +10,17 @@ class Updater {
     const DB_OPTION = 'premmerce_filter_db_version';
 
     /**
+     * Version of the SEO tables' schema, stored separately from DB_OPTION. The plugin
+     * version in DB_OPTION can be current while the tables are not: the free build has no
+     * SEO tables, so a site that moved from free to premium without reactivating never got
+     * them, or their newer columns (#180). Bump this when SeoModel or SeoTermModel install()
+     * changes.
+     */
+    const SEO_SCHEMA_OPTION = 'premmerce_filter_seo_schema_version';
+
+    const SEO_SCHEMA_VERSION = '3.4';
+
+    /**
      * File Manager
      *
      * @var FileManager
@@ -54,6 +65,9 @@ class Updater {
                 }
             }
             update_option( self::DB_OPTION, FilterPlugin::getVersion() );
+        }
+        if ( get_option( self::SEO_SCHEMA_OPTION ) !== self::SEO_SCHEMA_VERSION ) {
+            $this->installDb();
         }
     }
 

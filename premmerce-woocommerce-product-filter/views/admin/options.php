@@ -29,9 +29,9 @@ if (! defined('ABSPATH')) {
 
 		<?php
 		if (!premmerce_pwpf_fs()->can_use_premium_code()) : //if it is not Premium plan. ?>
-			<a class="nav-tab premmerce-upgrate-to-premium-button"
+			<a class="nav-tab premmerce-upgrade-to-premium-button"
 				href="<?php echo esc_url(admin_url('admin.php?page=premmerce-filter-admin-pricing')); ?>">
-					<?php esc_attr_e('Upgrate to Premium', 'premmerce-filter'); ?>
+					<?php esc_attr_e('Upgrade to Premium', 'premmerce-filter'); ?>
 			</a>
 		<?php
 		endif;

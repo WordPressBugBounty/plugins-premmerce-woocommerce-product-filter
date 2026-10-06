@@ -717,7 +717,7 @@ msgid "Premmerce Product Filter for WooCommerce"
 msgstr "Premmerce WooCommerce Product Filter"
 
 #: views/admin/options.php:26
-msgid "Upgrate to Premium"
+msgid "Upgrade to Premium"
 msgstr ""
 
 #: views/admin/seo/form.php:25 views/admin/seo/form.php:78

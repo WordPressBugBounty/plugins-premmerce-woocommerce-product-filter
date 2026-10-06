@@ -60,6 +60,9 @@ class ProductArchiveStrategy extends WidgetsStrategy
             'html'     => $html
         );
 
+        // The container holds the H1 and description, but not the title tag.
+        $response = $this->addDocumentTitle($response);
+
         return parent::updateResponse($response, $instance);
     }
 

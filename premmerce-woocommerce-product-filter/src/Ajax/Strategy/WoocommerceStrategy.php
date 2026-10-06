@@ -27,7 +27,46 @@ class WoocommerceStrategy extends WidgetsStrategy
     {
         $instance = Frontend::getInstanceByRequest();
 
+        $response = $this->addArchiveHeader($response);
+        $response = $this->addDocumentTitle($response);
+
         return parent::updateResponse($this->loadContent($response), $instance);
+    }
+
+    /**
+     * The archive's H1 and description. The container starts after them, at
+     * woocommerce_before_shop_loop, but they change with the filter, e.g. on an SEO rule's page.
+     * Must run before loadContent(), which turns them off.
+     *
+     * @param array $response
+     *
+     * @return array
+     */
+    public function addArchiveHeader(array $response)
+    {
+        $response[] = array(
+            'selector' => '.woocommerce-products-header__title',
+            'callback' => 'html',
+            'html'     => woocommerce_page_title(false)
+        );
+
+        ob_start();
+        do_action('woocommerce_archive_description');
+        $description = ob_get_clean();
+
+        $response[] = array(
+            'selector' => '.woocommerce-products-header .term-description, .woocommerce-products-header .page-description',
+            'callback' => 'remove',
+            'html'     => ''
+        );
+
+        $response[] = array(
+            'selector' => '.woocommerce-products-header',
+            'callback' => 'append',
+            'html'     => $description
+        );
+
+        return $response;
     }
 
     /**

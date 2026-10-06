@@ -3,6 +3,7 @@
 namespace Premmerce\Filter\Seo;
 
 use Premmerce\Filter\Admin\Tabs\Cache;
+use Premmerce\Filter\Admin\Tabs\SeoRules;
 use Premmerce\SDK\V2\FileManager\FileManager;
 /**
  * Class BundlesTable

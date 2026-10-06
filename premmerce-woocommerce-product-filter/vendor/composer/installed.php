@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'premmerce/premmerce-woocommerce-product-filter',
-        'pretty_version' => '3.8.2',
-        'version' => '3.8.2.0',
-        'reference' => '64e2b954af97fc9c44a98bca9d88454becc60505',
+        'pretty_version' => '3.8.3',
+        'version' => '3.8.3.0',
+        'reference' => '080730b056dd2e1804664455860f077645c62875',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'premmerce/premmerce-woocommerce-product-filter' => array(
-            'pretty_version' => '3.8.2',
-            'version' => '3.8.2.0',
-            'reference' => '64e2b954af97fc9c44a98bca9d88454becc60505',
+            'pretty_version' => '3.8.3',
+            'version' => '3.8.3.0',
+            'reference' => '080730b056dd2e1804664455860f077645c62875',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

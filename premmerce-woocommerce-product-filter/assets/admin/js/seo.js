@@ -373,7 +373,7 @@ jQuery(function ($) {
             url: ajaxurl,
             method: 'post',
             dataType: 'json',
-            data: { action: action },
+            data: { action: action, ajax_nonce: adminLocOptions.ajax_nonce },
         }).then(function (data) {
             var value = widget.progressbar('value') + 1;
             widget.progressbar('value', value);

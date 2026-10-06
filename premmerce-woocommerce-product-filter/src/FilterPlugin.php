@@ -268,7 +268,7 @@ class FilterPlugin implements PluginInterface
                 $error = sprintf(
                     /* translators: %%1$s: our plugin name, %2$s another plugin name */
                     __('The %1$s plugin requires %2$s plugin to be active!', 'premmerce-filter'),
-                    'SEO Product Filter for Woocommerce',
+                    'SEO Product Filter for WooCommerce',
                     $plugin
                 );
                 $this->notifier->push($error, AdminNotifier::ERROR, false);

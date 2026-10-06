@@ -719,7 +719,7 @@ msgid "Premmerce Product Filter for WooCommerce"
 msgstr "Premmerce Product Filter for WooCommerce"
 
 #: views/admin/options.php:26
-msgid "Upgrate to Premium"
+msgid "Upgrade to Premium"
 msgstr "Upgraden auf Premium"
 
 #: views/admin/seo/form.php:25 views/admin/seo/form.php:78

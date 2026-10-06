@@ -137,7 +137,7 @@
     background: #f7f7f7;
 }
 
-.premmerce-upgrate-to-premium-button {
+.premmerce-upgrade-to-premium-button {
     background-color: #2271b1;
     border-color: #2271b1;
     color: #ffffff;
@@ -146,9 +146,9 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.premmerce-upgrate-to-premium-button:hover,
-.premmerce-upgrate-to-premium-button:active,
-.premmerce-upgrate-to-premium-button:focus {
+.premmerce-upgrade-to-premium-button:hover,
+.premmerce-upgrade-to-premium-button:active,
+.premmerce-upgrade-to-premium-button:focus {
     background-color: #2271b1;
     border-color: #2271b1;
     color: #ffffff;

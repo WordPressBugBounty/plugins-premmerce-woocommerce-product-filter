@@ -42,4 +42,25 @@ class WidgetsStrategy implements ThemeStrategyInterface
 
         return $response;
     }
+
+    /**
+     * The document title of the page the filter went to, e.g. an SEO rule's title. Only for
+     * themes that let WordPress print the title tag, as wp_get_document_title() is their title.
+     *
+     * @param array $response
+     *
+     * @return array
+     */
+    public function addDocumentTitle(array $response)
+    {
+        if (current_theme_supports('title-tag')) {
+            $response[] = array(
+                'selector' => 'head > title',
+                'callback' => 'html',
+                'html'     => wp_get_document_title()
+            );
+        }
+
+        return $response;
+    }
 }

@@ -178,10 +178,11 @@ if ( !function_exists( 'premmerce_filter_admin_seo_variable_inputs' ) ) {
         ?>
 		</label>
 		<?php 
-        //show in free version.
+        // Show in the free version, and without a licence. The whole block, textarea included, is
+        // removed from the WooCommerce build, which always has the editor above.
         if ( !premmerce_pwpf_fs()->can_use_premium_code() ) {
             ?>
-		<textarea name="meta_description" id="rule-description" cols="30" rows="5" <?php 
+		<textarea name="description" id="rule-description" cols="30" rows="5" <?php 
             echo esc_attr( $disabled );
             ?>><?php 
             echo esc_textarea( $rule['description'] );

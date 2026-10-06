@@ -18,6 +18,7 @@ if ( ! defined('ABSPATH')) {
 	<form data-generation-form method="post">
 
 		<input type="hidden" name="action" value="generation_progress">
+		<?php wp_nonce_field(\Premmerce\Filter\Admin\Tabs\SeoRules::NONCE_GENERATE); ?>
 
 		<div class="form-wrap">
 			<h3><?php esc_attr_e('Generate rules', 'premmerce-filter'); ?></h3>

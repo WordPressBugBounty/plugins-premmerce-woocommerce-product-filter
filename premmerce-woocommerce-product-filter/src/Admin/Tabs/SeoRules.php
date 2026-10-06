@@ -42,6 +42,27 @@ class SeoRules implements TabInterface {
     const KEY_UPDATE_PATHS = 'premmerce_filter_update_paths';
 
     /**
+     * Capability needed to change SEO rules: the one the Product Filter pages are registered with.
+     */
+    const CAPABILITY = 'manage_options';
+
+    /**
+     * Nonce actions for the rule form, the Generate Rules form and the Update paths link.
+     */
+    const NONCE_CREATE = 'premmerce_filter_seo_create';
+
+    const NONCE_UPDATE = 'premmerce_filter_seo_update';
+
+    const NONCE_GENERATE = 'premmerce_filter_seo_generate';
+
+    const NONCE_UPDATE_PATHS = 'premmerce_filter_seo_update_paths';
+
+    /**
+     * Nonce action of the admin AJAX requests, localized as adminLocOptions.ajax_nonce.
+     */
+    const NONCE_AJAX = 'filter-ajax-nonce';
+
+    /**
      * SeoRules constructor.
      *
      * @param FileManager   $fileManager
@@ -64,6 +85,9 @@ class SeoRules implements TabInterface {
      * Ajax get terms
      */
     public function getTaxonomyTerms() {
+        if ( !current_user_can( self::CAPABILITY ) ) {
+            wp_die( -1, 403 );
+        }
         $terms = get_terms( array(
             'taxonomy'   => ( isset( $_POST['taxonomy'] ) && isset( $_POST['ajax_nonce'] ) && wp_verify_nonce( sanitize_text_field( $_POST['ajax_nonce'] ), 'filter-ajax-nonce' ) ? wc_clean( wp_unslash( $_POST['taxonomy'] ) ) : null ),
             'hide_empty' => false,
@@ -91,24 +115,7 @@ class SeoRules implements TabInterface {
      * Render tab content
      */
     public function render() {
-        $action = ( isset( $_REQUEST['action'] ) ? wc_clean( wp_unslash( $_REQUEST['action'] ) ) : null );
-        switch ( $action ) {
-            case 'edit':
-                $this->renderEdit__premium_only();
-                break;
-            case 'generate_rules':
-                $this->renderGenerate__premium_only();
-                break;
-            case 'update_paths':
-                $this->startUpdatePathsProgress__premium_only();
-                break;
-            case 'generation_progress':
-                $this->startGenerationProgress__premium_only();
-                break;
-            default:
-                $this->renderList();
-                break;
-        }
+        $this->renderList();
     }
 
     /**

@@ -120,7 +120,23 @@
 		initScrolls();
 		initSliders();
 		fixWoocommerceOrdering();
+		initVariationForms();
+		// Other plugins can rebind to the new products on this event.
 		$(document).trigger('premmerce-filter-updated');
+	}
+
+	/**
+	 * WooCommerce binds variation forms (e.g. a swatches plugin's add to cart in the
+	 * product loop) once, on page load, so bind the ones the AJAX refresh brought in.
+	 */
+	function initVariationForms() {
+		if (typeof $.fn.wc_variation_form !== 'function') {
+			return;
+		}
+
+		$('.premmerce-filter-ajax-container .variations_form').each(function () {
+			$(this).wc_variation_form();
+		});
 	}
 
 	var fieldMin = 'data-premmerce-filter-slider-min';

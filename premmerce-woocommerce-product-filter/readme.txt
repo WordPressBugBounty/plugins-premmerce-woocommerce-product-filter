@@ -4,7 +4,7 @@ Contributors: premmerce, freemius
 Tags: product filter, WooCommerce product filter, WooCommerce filter,  Premmerce, attributes filter
 Requires at least: 4.8
 Tested up to: 7.1
-Stable tag: 3.8.2
+Stable tag: 3.8.3
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -144,6 +144,18 @@ Please report security bugs found in the source code of this plugin through the 
 
 
 == Changelog ==
+
+= 3.8.3 (6th October 2026) =
+
+* Security Fix: Creating, editing, generating and updating SEO rules now checks that the user can manage the plugin and that the request carries a valid security token
+* Fix: Links on the SEO Rules tab no longer cause a fatal error in the free version
+* Fix: With AJAX on, variation forms in the filtered products work, such as a swatches plugin's add to cart in the product list
+* Fix: With AJAX on, an SEO rule's H1, page title and description update when filtering to or from its page
+* Fix: With AJAX on, the [premmerce_active_filters] shortcode updates when the filters change
+* Fix: The canonical URL that Yoast SEO, All in One SEO or Rank Math gives a filter page no longer ends in two slashes
+* Fix: With the default SEO settings on, "Discourage search engines" now noindexes filter pages that have no SEO rule
+* Fix: All in One SEO's sitemap no longer breaks when no SEO rules can be indexed
+* Fix: SEO rule pages no longer have two meta descriptions with All in One SEO, and a rule with no meta description keeps the SEO plugin's own
 
 = 3.8.2 (2nd October 2026) =
 

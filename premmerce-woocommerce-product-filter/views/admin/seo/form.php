@@ -1,6 +1,7 @@
 <?php
 
 use Premmerce\Filter\FilterPlugin;
+use Premmerce\Filter\Admin\Tabs\SeoRules;
 
 if (! defined('ABSPATH')) {
 	exit;
@@ -22,8 +23,8 @@ if (!premmerce_pwpf_fs()->can_use_premium_code()) {
 <div class="wrap">
 	<div class="form-wrap">
 		<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-			<?php wp_nonce_field(); ?>
 			<?php if (empty($rule['id'])) : ?>
+			<?php wp_nonce_field(SeoRules::NONCE_CREATE); ?>
 			<input type="hidden" name="action" value="premmerce_filter_seo_create">
 			<h3><?php esc_attr_e('Add new rule', 'premmerce-filter'); ?></h3>
 			<?php else : ?>
@@ -36,6 +37,7 @@ if (!premmerce_pwpf_fs()->can_use_premium_code()) {
 					<?php esc_attr_e('Visit page', 'premmerce-filter'); ?>
 				</a>
 			</div>
+			<?php wp_nonce_field(SeoRules::NONCE_UPDATE); ?>
 			<input type="hidden" name="action" value="premmerce_filter_seo_update">
 			<input type="hidden" name="id" value="<?php echo esc_attr($rule['id']); ?>">
 			<h3><?php esc_attr_e('Update rule', 'premmerce-filter'); ?></h3>

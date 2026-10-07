@@ -118,6 +118,14 @@ class Query
     public function where($columns, $separator = '=')
     {
         if (count($columns)) {
+            // Booleans as 1 and 0: prepare() turns false into '', which MySQL matches against a
+            // 0 column but SQLite (the WordPress SQLite Database Integration) doesn't.
+            foreach ($columns as $column => $value) {
+                if (is_bool($value)) {
+                    $columns[ $column ] = (int) $value;
+                }
+            }
+
             $where = $this->implodeKeys($columns, ' ' . $separator . ' %s', ' AND ');
 
             if (! $this->where) {

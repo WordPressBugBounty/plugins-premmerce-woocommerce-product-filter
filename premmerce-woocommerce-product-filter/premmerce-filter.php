@@ -3,7 +3,7 @@
  * Plugin Name:       Premmerce Product Filter for WooCommerce
  * Plugin URI:        https://premmerce.com/woocommerce-product-filter/
  * Description:       Premmerce Product Filter for WooCommerce plugin is a convenient and flexible tool for managing filters for WooCommerce products.
- * Version:     3.8.3
+ * Version:     3.8.4
  *  *
  * Author:            Premmerce
  * Author URI:        https://premmerce.com
@@ -36,8 +36,10 @@ if (! function_exists('premmerce_pwpf_fs')) {
 
 			register_deactivation_hook(__FILE__, [$main, 'deactivate']);
 
-			register_uninstall_hook(__FILE__, [FilterPlugin::class, 'uninstall']);
-
+			// Freemius registers its own uninstall hook, which a second WordPress uninstall hook here
+			// would replace, so its uninstall event would never be sent.
+			premmerce_pwpf_fs()->add_action('after_uninstall', [Premmerce\Filter\FilterPlugin::class, 'uninstall']);
+			
 			$main->run();
 		}
 	);

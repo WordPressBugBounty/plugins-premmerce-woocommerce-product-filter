@@ -92,27 +92,27 @@ class BundleAndSave implements TabInterface
                     'premmerce_filter_admin_premmerce_style',
                     $this->fileManager->locateAsset('admin/css/premmerce.min.css'),
                     array(),
-                    FilterPlugin::getVersion()
+                    FilterPlugin::getAssetVersion()
                 );
                 wp_enqueue_script(
                     'premmerce_filter_admin_bundles_freemius_jquery_for_checkout_script',
                     'https://code.jquery.com/jquery-1.12.4.min.js',
                     array(),
-                    FilterPlugin::getVersion(),
+                    FilterPlugin::getAssetVersion(),
                     true
                 );
                 wp_enqueue_script(
                     'premmerce_filter_admin_bundles_freemius_checkout_script',
                     'https://checkout.freemius.com/checkout.min.js',
                     array(),
-                    FilterPlugin::getVersion(),
+                    FilterPlugin::getAssetVersion(),
                     true
                 );
                 wp_enqueue_script(
                     'premmerce_filter_admin_bundles_script',
                     $this->fileManager->locateAsset('admin/js/bundles.js'),
                     array(),
-                    FilterPlugin::getVersion(),
+                    FilterPlugin::getAssetVersion(),
                     true
                 );
             }

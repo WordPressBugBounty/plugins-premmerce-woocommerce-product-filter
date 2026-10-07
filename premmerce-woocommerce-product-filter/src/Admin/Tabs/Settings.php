@@ -205,7 +205,7 @@ class Settings extends BaseSettings {
         );
         $settings = self::getMainStaticSettings( $settings['taxonomies'] );
         $strategies = array(
-            'woocommerce_content' => __( 'Woocommerce content', 'premmerce-filter' ),
+            'woocommerce_content' => __( 'WooCommerce content', 'premmerce-filter' ),
             'product_archive'     => __( 'Product archive', 'premmerce-filter' ),
         );
         $currentStrategy = apply_filters( 'premmerce_filter_ajax_current_strategy', null );
@@ -213,8 +213,8 @@ class Settings extends BaseSettings {
         if ( in_array( $currentStrategy, $configurableStrategies ) ) {
             $settings['ajax']['fields']['ajax_strategy'] = array(
                 'type'    => 'select',
-                'title'   => __( 'Ajax Strategy', 'premmerce-filter' ),
-                'help'    => __( 'Choose the strategy for replacing content during ajax product filtering.', 'premmerce-filter' ) . '<br>' . __( '<b>Woocommerce content</b> strategy - has better performance and supported most of woocommerce themes, where archive page has default woocommerce layout.', 'premmerce-filter' ) . '<br>' . __( '<b>Product archive</b> strategy - replaces all content placed in product archive template except footer and header.', 'premmerce-filter' ),
+                'title'   => __( 'AJAX strategy', 'premmerce-filter' ),
+                'help'    => __( 'Choose the strategy for replacing content during ajax product filtering.', 'premmerce-filter' ) . '<br>' . __( '<b>WooCommerce content</b> strategy: faster, and works with most themes whose shop pages use the default WooCommerce layout.', 'premmerce-filter' ) . '<br>' . __( '<b>Product archive</b> strategy: replaces everything in the product archive template except the header and footer.', 'premmerce-filter' ),
                 'options' => $strategies,
             );
         }

@@ -128,12 +128,27 @@ class FilterPlugin implements PluginInterface
     private $notifier;
 
     /**
+     * Main plugin file
+     *
+     * @var string
+     */
+    private static $mainFile;
+
+    /**
+     * Asset Version
+     *
+     * @var string
+     */
+    private static $assetVersion;
+
+    /**
      * PluginManager constructor.
      *
      * @param string $mainFile
      */
     public function __construct($mainFile)
     {
+        self::$mainFile    = $mainFile;
         $this->fileManager = new FileManager($mainFile, 'premmerce-woocommerce-product-filter');
         $this->notifier    = new AdminNotifier();
 
@@ -243,9 +258,16 @@ class FilterPlugin implements PluginInterface
 
     /**
      * Fired during plugin uninstall
+     *
+     * The free, Freemius premium and WooCommerce Marketplace editions share these options, so
+     * they are kept while another edition is installed. The SEO rules tables are always kept.
      */
     public static function uninstall()
     {
+        if (self::isAnotherEditionInstalled()) {
+            return;
+        }
+
         delete_option(self::OPTION_ATTRIBUTES);
         delete_option(self::OPTION_COLORS);
         delete_option(self::OPTION_IMAGES);
@@ -254,6 +276,30 @@ class FilterPlugin implements PluginInterface
         delete_option(self::OPTION_PERMALINKS_SETTINGS);
         delete_option(Updater::DB_OPTION);
         delete_option(Updater::SEO_SCHEMA_OPTION);
+    }
+
+    /**
+     * Whether another edition of this plugin is installed: any other plugin with its text domain.
+     * Deleting several plugins at once uninstalls each before the next is deleted, so a plugin
+     * is only counted while its main file exists.
+     *
+     * @return bool
+     */
+    public static function isAnotherEditionInstalled()
+    {
+        if (!function_exists('get_plugins')) {
+            include_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        $current = self::$mainFile ? plugin_basename(self::$mainFile) : '';
+
+        foreach (get_plugins() as $plugin => $data) {
+            if ($plugin !== $current && self::DOMAIN === $data['TextDomain'] && file_exists(WP_PLUGIN_DIR . '/' . $plugin)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -324,9 +370,8 @@ class FilterPlugin implements PluginInterface
         wp_register_script(
             'premmerce_filter_admin_blocks',
             $this->fileManager->locateAsset('blocks/index.js'),
-            plugins_url('/build/index.js', __FILE__),
             array( 'jquery', 'jquery-ui-slider', 'jquery-touch-punch', 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-api' ),
-            self::getVersion(),
+            self::getAssetVersion(),
             true
         );
         // register our front-end styles
@@ -334,14 +379,14 @@ class FilterPlugin implements PluginInterface
             'premmerce_filter_admin_blocks_style',
             $this->fileManager->locateAsset('blocks/style.css'),
             array(),
-            self::getVersion()
+            self::getAssetVersion()
         );
         // register our editor styles
         wp_register_style(
             'premmerce_filter_admin_blocks_edit_style',
             $this->fileManager->locateAsset('blocks/editor.css'),
             array('wp-edit-blocks'),
-            self::getVersion()
+            self::getAssetVersion()
         );
 
         $localizeOptions = array();
@@ -492,15 +537,32 @@ class FilterPlugin implements PluginInterface
     }
 
     /**
-     * Get Version
+     * Get Version: the database version the Updater stores and migrates to. It only changes
+     * when an update needs to run, so use getAssetVersion() for scripts and styles.
      *
-     * @return void
+     * @return string
      */
     public static function getVersion()
     {
         $version = '3.7';
 
         return $version;
+    }
+
+    /**
+     * Get Asset Version: the main file's Version header, for the ?ver= of the plugin's scripts
+     * and styles, so browsers fetch them again after each release.
+     *
+     * @return string
+     */
+    public static function getAssetVersion()
+    {
+        if (null === self::$assetVersion) {
+            $header             = self::$mainFile ? get_file_data(self::$mainFile, array('Version' => 'Version')) : array();
+            self::$assetVersion = empty($header['Version']) ? self::getVersion() : $header['Version'];
+        }
+
+        return self::$assetVersion;
     }
 
     /**

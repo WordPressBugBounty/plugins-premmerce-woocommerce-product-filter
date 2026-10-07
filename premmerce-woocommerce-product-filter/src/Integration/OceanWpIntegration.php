@@ -39,7 +39,7 @@ class OceanWpIntegration
             'premmerce_filter_ocean_wp_style',
             $this->fileManager->locateAsset('front/integration-css/ocean-wp.css'),
             array(),
-            FilterPlugin::getVersion()
+            FilterPlugin::getAssetVersion()
         );
     }
 

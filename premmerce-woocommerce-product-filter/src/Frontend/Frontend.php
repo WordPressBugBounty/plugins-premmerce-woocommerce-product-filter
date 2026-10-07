@@ -124,14 +124,14 @@ class Frontend {
                 'premmerce_filter_script',
                 $this->fileManager->locateAsset( 'front/js/script.js' ),
                 array('jquery', 'jquery-ui-slider', 'jquery-touch-punch'),
-                FilterPlugin::getVersion(),
+                FilterPlugin::getAssetVersion(),
                 true
             );
             wp_enqueue_style(
                 'premmerce_filter_style',
                 $this->fileManager->locateAsset( 'blocks/style.css' ),
                 array(),
-                FilterPlugin::getVersion()
+                FilterPlugin::getAssetVersion()
             );
             //add custom css from Settings tab
             if ( !empty( $settings['custom_style_css'] ) ) {

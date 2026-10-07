@@ -4,7 +4,7 @@ Contributors: premmerce, freemius
 Tags: product filter, WooCommerce product filter, WooCommerce filter,  Premmerce, attributes filter
 Requires at least: 4.8
 Tested up to: 7.1
-Stable tag: 3.8.3
+Stable tag: 3.8.4
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -144,6 +144,15 @@ Please report security bugs found in the source code of this plugin through the 
 
 
 == Changelog ==
+
+= 3.8.4 (7th October 2026) =
+
+* Fix: The SEO Settings tab (premium) is back, so the default SEO settings for filter pages can be changed again
+* Fix: Deleting the plugin now removes its settings, and keeps them while another edition (free or premium) is still installed
+* Fix: Scripts and styles carry the plugin's version, so browsers load the new files after an update
+* Fix: The SEO rules sitemap works on sites using SQLite
+* Fix: "WooCommerce" is spelled correctly in the Settings tab and the filter block's description
+* Update: Updated Freemius SDK to the latest version
 
 = 3.8.3 (6th October 2026) =
 

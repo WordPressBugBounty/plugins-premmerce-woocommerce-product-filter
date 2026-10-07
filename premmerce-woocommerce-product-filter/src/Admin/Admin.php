@@ -5,6 +5,7 @@ namespace Premmerce\Filter\Admin;
 use Premmerce\Filter\FilterPlugin;
 use Premmerce\Filter\Admin\Tabs\Cache;
 use Premmerce\Filter\Admin\Tabs\SeoRules;
+use Premmerce\Filter\Admin\Tabs\SeoSettings;
 use Premmerce\Filter\Admin\Tabs\Settings;
 use Premmerce\Filter\Admin\Tabs\Taxonomy;
 use Premmerce\Filter\Admin\Tabs\SimpleTab;
@@ -190,19 +191,19 @@ class Admin {
                 'premmerce_filter_admin_style',
                 $this->fileManager->locateAsset( 'admin/css/style.css' ),
                 array(),
-                FilterPlugin::getVersion()
+                FilterPlugin::getAssetVersion()
             );
             wp_enqueue_style(
                 'premmerce_filter_admin_style_seo',
                 $this->fileManager->locateAsset( 'admin/css/seo.css' ),
                 array(),
-                FilterPlugin::getVersion()
+                FilterPlugin::getAssetVersion()
             );
             wp_enqueue_script(
                 'premmerce_filter_admin_seo',
                 $this->fileManager->locateAsset( 'admin/js/seo.js' ),
                 array('select2', 'jquery-ui-dialog', 'jquery-ui-progressbar'),
-                FilterPlugin::getVersion(),
+                FilterPlugin::getAssetVersion(),
                 true
             );
             wp_enqueue_script(
@@ -214,7 +215,7 @@ class Admin {
                     'wp-color-picker',
                     'jquery-ui-droppable'
                 ),
-                FilterPlugin::getVersion(),
+                FilterPlugin::getAssetVersion(),
                 true
             );
             $localizeOptions = array();
@@ -229,13 +230,13 @@ class Admin {
                 'premmerce_filter_admin_style',
                 $this->fileManager->locateAsset( 'admin/css/widget.css' ),
                 array(),
-                FilterPlugin::getVersion()
+                FilterPlugin::getAssetVersion()
             );
             wp_enqueue_script(
                 'premmerce_filter_admin_script',
                 $this->fileManager->locateAsset( 'admin/js/widget.js' ),
                 array('wp-color-picker'),
-                FilterPlugin::getVersion(),
+                FilterPlugin::getAssetVersion(),
                 true
             );
         }

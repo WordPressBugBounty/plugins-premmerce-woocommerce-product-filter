@@ -62,7 +62,9 @@ class ProductsQuery
             return $results;
         }
 
-        $results = $wpdb->get_col($wpdb->prepare('%1$s', '') . $query);
+        // The tax, meta and search SQL come from WP_Tax_Query, WP_Meta_Query and WP_Query, which
+        // escape their values, so there is nothing left to prepare.
+        $results = $wpdb->get_col($query); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         $results = array_flip($results);
         $this->cache->set($cacheKey, $results);
 
@@ -90,7 +92,7 @@ class ProductsQuery
         }
 
         if (!empty($termTaxonomyIds)) {
-            $query[] = 'WHERE r.term_taxonomy_id in  (' . implode(',', $termTaxonomyIds) . ')';
+            $query[] = 'WHERE r.term_taxonomy_id in  (' . implode(',', array_map('absint', $termTaxonomyIds)) . ')';
         }
 
         $query = implode(' ', $query);
@@ -102,7 +104,8 @@ class ProductsQuery
             return $ids;
         }
 
-        $results = $wpdb->get_results($wpdb->prepare('%1$s', '') . $query, ARRAY_A);
+        // Integer IDs, and category IDs escaped by arraySql(), so there is nothing left to prepare.
+        $results = $wpdb->get_results($query, ARRAY_A); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
         $ids = array();
         foreach ($results as $key => $result) {

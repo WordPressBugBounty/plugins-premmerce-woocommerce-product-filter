@@ -75,7 +75,9 @@ class PriceQuery
             if ($useCache && $results) {
                 $prices = $results;
             } else {
-                $getPrices = $wpdb->get_row($wpdb->prepare('%1$s', '') . $sql, ARRAY_A);
+                // The tax, meta and search SQL come from WP_Tax_Query, WP_Meta_Query and WP_Query, which
+                // escape their values, so there is nothing left to prepare.
+                $getPrices = $wpdb->get_row($sql, ARRAY_A); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
                 $prices    = !empty($getPrices) ? $getPrices : array();
 
                 if ($useCache) {

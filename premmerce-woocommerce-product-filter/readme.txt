@@ -4,7 +4,7 @@ Contributors: premmerce, freemius
 Tags: product filter, WooCommerce product filter, WooCommerce filter,  Premmerce, attributes filter
 Requires at least: 4.8
 Tested up to: 7.1
-Stable tag: 3.8.4
+Stable tag: 3.8.5
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -144,6 +144,15 @@ Please report security bugs found in the source code of this plugin through the 
 
 
 == Changelog ==
+
+= 3.8.5 (9th October 2026) =
+
+* Security Fix: The filter shortcode, block and widget now clean their style settings before adding them to the page
+* Fix: SEO rules bulk delete, enable and disable now return to the rules list after running
+* Fix: The [premmerce_filter] shortcode keeps its custom styles when it has content between its tags
+* Fix: No PHP 8.1 deprecation notice when saving the filter widget, and no PHP 8.4 deprecation from the admin tabs
+* Fix: Dragging an attribute onto an unknown item in the Attributes tab no longer raises PHP warnings
+* Improvement: WooCommerce 11.2 compatibility
 
 = 3.8.4 (7th October 2026) =
 

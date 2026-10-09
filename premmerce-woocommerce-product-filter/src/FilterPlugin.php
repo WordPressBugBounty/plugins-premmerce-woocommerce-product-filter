@@ -12,6 +12,7 @@ use Premmerce\SDK\V2\FileManager\FileManager;
 use Premmerce\SDK\V2\Notifications\AdminNotifier;
 use Premmerce\Filter\Admin\Tabs\Base\BaseSettings;
 use Premmerce\Filter\Shortcodes\FilterWidgetShortcodes;
+use Premmerce\Filter\Widget\FilterWidget;
 use Premmerce\Filter\Integration\YITHBrands;
 
 /**
@@ -504,10 +505,15 @@ class FilterPlugin implements PluginInterface
             $isRender = true;
         }
 
+        //Only the style settings, each cleaned: they end up in the filter's markup and inline CSS.
+        $attr = FilterWidget::sanitizeStyleSettings($attr);
+
         $filterBlock = (new FilterWidgetShortcodes($this->fileManager))->premmerceShortcodeFilter($attr, 'filterblock', $isRender);
         $filterBlock = str_replace(array("\n", "\t"), '', $filterBlock);
         $filterBlock = str_replace(array('for='), ' for=', $filterBlock);
-        return $filterBlock;
+
+        //The attributes were cleaned above and the template escapes what it prints.
+        return $filterBlock; // nosemgrep: audit.php.wp.security.xss.block-attr
     }
 
     /**

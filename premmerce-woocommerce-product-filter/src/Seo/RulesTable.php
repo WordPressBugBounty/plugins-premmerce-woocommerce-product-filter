@@ -2,8 +2,6 @@
 
 namespace Premmerce\Filter\Seo;
 
-use Premmerce\Filter\Admin\Tabs\Cache;
-use Premmerce\Filter\Admin\Tabs\SeoRules;
 use Premmerce\SDK\V2\FileManager\FileManager;
 /**
  * Class BundlesTable
@@ -143,7 +141,6 @@ class RulesTable extends \WP_List_Table {
      */
     public function prepare_items() {
         $this->_column_headers = array($this->get_columns());
-        $this->handle_bulk_actions();
         $perPage = 20;
         $currentPage = $this->get_pagenum();
         $category = $this->get_query_filter( 'filter_product_cat' );
@@ -170,12 +167,6 @@ class RulesTable extends \WP_List_Table {
      */
     public function no_items() {
         esc_attr_e( 'No rules found.', 'premmerce-filter' );
-    }
-
-    /**
-     * Handle table bulk actions
-     */
-    public function handle_bulk_actions() {
     }
 
     /**

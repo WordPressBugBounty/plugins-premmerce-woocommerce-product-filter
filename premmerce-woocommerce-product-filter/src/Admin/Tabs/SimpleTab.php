@@ -14,7 +14,16 @@ class SimpleTab implements TabInterface
 
     private $validCallback;
 
-    public function __construct($name, $label, callable $renderCallback, callable $validCallback = null)
+    /**
+     * SimpleTab constructor.
+     *
+     * @param string        $name
+     * @param string        $label
+     * @param callable      $renderCallback
+     * @param callable|null $validCallback Untyped: PHP 8.4 deprecates an implicitly nullable
+     *                                     callable, and ?callable needs PHP 7.1.
+     */
+    public function __construct($name, $label, callable $renderCallback, $validCallback = null)
     {
         $this->name           = $name;
         $this->label          = $label;

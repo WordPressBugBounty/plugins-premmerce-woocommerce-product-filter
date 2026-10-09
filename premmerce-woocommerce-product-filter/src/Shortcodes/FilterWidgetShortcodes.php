@@ -27,21 +27,26 @@ class FilterWidgetShortcodes {
     public function premmerceShortcodeFilter( $atts, $type = 'shortcode', $isRender = false ) {
         //check if it is woocomerce pages and we can show this shortcode
         if ( apply_filters( 'premmerce_product_filter_active', false ) || $isRender ) {
-            if ( empty( $atts ) ) {
+            if ( !is_array( $atts ) ) {
                 $atts = array();
             }
-            $type = ( !empty( $type ) ? $type : 'shortcode' );
+            if ( empty( $atts['style'] ) ) {
+                $atts['style'] = 'custom';
+            }
+            //Only the style settings, each cleaned: they end up in the filter's markup and inline CSS.
+            $atts = FilterWidget::sanitizeStyleSettings( $atts );
+            //As a shortcode callback the second argument is the shortcode's content, not a type.
+            $type = ( 'filterblock' === $type ? $type : 'shortcode' );
             $getId = get_the_ID();
             $uniqId = uniqid();
             $args['id'] = "{$type}-{$getId}-{$uniqId}";
             $args['name'] = $type;
-            if ( empty( $atts['style'] ) ) {
-                $atts['style'] = 'custom';
-            }
             //take data from FilterWidget class
             $data = FilterWidget::getFilterWidgetContent( $args, $atts );
             //render filter
+            //The attributes were cleaned above and the template escapes what it prints.
             return $this->fileManager->renderTemplate( 'frontend/filter.php', $data );
+            // nosemgrep: audit.php.wp.security.xss.shortcode-attr
         }
     }
 

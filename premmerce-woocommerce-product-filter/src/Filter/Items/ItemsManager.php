@@ -262,18 +262,13 @@ class ItemsManager
         if (!empty($products)) {
             if (isset($_GET['min_price']) || isset($_GET['max_price'])) {
                 global $wpdb;
-                $pids         = array_map('intval', array_keys($products));
-                $placeholders = implode(',', array_fill(0, count($pids), '%d'));
-                $ids          = $wpdb->get_col(
+                $pids     = array_map('intval', array_keys($products));
+                $minPrice = !empty($_GET['min_price']) ? (float) $_GET['min_price'] : 0;
+                $maxPrice = !empty($_GET['max_price']) ? (float) $_GET['max_price'] : 999999999;
+                $ids      = $wpdb->get_col(
                     $wpdb->prepare(
-                        "SELECT post_id FROM {$wpdb->postmeta} WHERE post_id IN ({$placeholders}) AND meta_key = '_price' AND meta_value >= %f AND meta_value <= %f",
-                        array_merge(
-                            $pids,
-                            array(
-                                !empty($_GET['min_price']) ? (float) $_GET['min_price'] : 0,
-                                !empty($_GET['max_price']) ? (float) $_GET['max_price'] : 999999999
-                            )
-                        )
+                        "SELECT post_id FROM {$wpdb->postmeta} WHERE post_id IN (" . implode(',', array_fill(0, count($pids), '%d')) . ") AND meta_key = '_price' AND meta_value >= %f AND meta_value <= %f",
+                        array_merge($pids, array($minPrice, $maxPrice))
                     )
                 );
                 $ids      = array_map('intval', $ids);

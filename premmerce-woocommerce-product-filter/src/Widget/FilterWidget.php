@@ -9,6 +9,32 @@ class FilterWidget extends WP_Widget {
     const FILTER_WIDGET_ID = 'premmerce_filter_filter_widget';
 
     /**
+     * Settings the filter widget, the [premmerce_filter] shortcode and the block take, and how
+     * each is cleaned: text, one of a list of values, on or off, a CSS colour or a size in pixels.
+     * They end up in the filter's markup and its inline CSS.
+     */
+    const STYLE_SETTINGS = array(
+        'title'                 => 'text',
+        'style'                 => array('default', 'premmerce', 'custom'),
+        'add_border'            => 'toggle',
+        'border_color'          => 'color',
+        'price_input_bg'        => 'color',
+        'price_input_text'      => 'color',
+        'price_slider_range'    => 'color',
+        'price_slider_handle'   => 'color',
+        'checkbox_appearance'   => array('0', '2713', '2715'),
+        'title_appearance'      => array('default', 'uppercase'),
+        'bold_title'            => 'toggle',
+        'bg_color'              => 'color',
+        'title_size'            => 'size',
+        'title_color'           => 'color',
+        'terms_title_size'      => 'size',
+        'terms_title_color'     => 'color',
+        'checkbox_border_color' => 'color',
+        'checkbox_color'        => 'color',
+    );
+
+    /**
      * FilterWidget constructor.
      */
     public function __construct() {
@@ -75,6 +101,58 @@ class FilterWidget extends WP_Widget {
     }
 
     /**
+     * Keep only the style settings, each cleaned. Settings that aren't set stay unset, so the
+     * filter's defaults apply to them as before.
+     *
+     * @param array $settings Widget instance, shortcode attributes or block attributes.
+     *
+     * @return array
+     */
+    public static function sanitizeStyleSettings( $settings ) {
+        $clean = array();
+        if ( !is_array( $settings ) ) {
+            return $clean;
+        }
+        foreach ( array_keys( self::STYLE_SETTINGS ) as $key ) {
+            if ( isset( $settings[$key] ) ) {
+                $clean[$key] = self::sanitizeStyleSetting( $key, $settings[$key] );
+            }
+        }
+        return $clean;
+    }
+
+    /**
+     * Clean one style setting. A value that doesn't fit becomes empty, or the first of a list.
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return string
+     */
+    public static function sanitizeStyleSetting( $key, $value ) {
+        $settings = self::STYLE_SETTINGS;
+        $rule = ( isset( $settings[$key] ) ? $settings[$key] : 'text' );
+        //on/off: a checkbox or shortcode sends 'on', the block true
+        if ( 'toggle' === $rule ) {
+            return ( 'on' === $value || true === $value ? 'on' : '' );
+        }
+        $value = ( is_scalar( $value ) ? sanitize_text_field( (string) $value ) : '' );
+        if ( is_array( $rule ) ) {
+            $value = strtolower( $value );
+            return ( in_array( $value, $rule, true ) ? $value : $rule[0] );
+        }
+        switch ( $rule ) {
+            case 'color':
+                //a hex, rgb(), hsl() or named colour: nothing that can end the CSS declaration
+                return ( preg_match( '/^[#a-zA-Z0-9(),.%\\s-]*$/', $value ) ? $value : '' );
+            case 'size':
+                return ( is_numeric( $value ) ? (string) abs( (float) $value ) : '' );
+            default:
+                return $value;
+        }
+    }
+
+    /**
      * Update
      *
      * @param array $new_instance
@@ -84,8 +162,8 @@ class FilterWidget extends WP_Widget {
      */
     public function update( $new_instance, $old_instance ) {
         $instance = array();
-        $instance['title'] = filter_var( $new_instance['title'], FILTER_SANITIZE_STRING );
-        $instance['style'] = filter_var( $new_instance['style'], FILTER_SANITIZE_STRING );
+        $instance['title'] = self::sanitizeStyleSetting( 'title', $new_instance['title'] );
+        $instance['style'] = self::sanitizeStyleSetting( 'style', $new_instance['style'] );
         return $instance;
     }
 

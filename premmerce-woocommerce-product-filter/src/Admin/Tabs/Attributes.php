@@ -252,9 +252,11 @@ class Attributes extends SortableListTab {
         $items = array();
         $swap = ( isset( $_POST['swap'] ) && isset( $_POST['ajax_nonce'] ) && wp_verify_nonce( sanitize_text_field( $_POST['ajax_nonce'] ), 'filter-ajax-nonce' ) ? wc_clean( wp_unslash( $_POST['swap'] ) ) : null );
         $ids = ( isset( $_POST['ids'] ) && isset( $_POST['ajax_nonce'] ) && wp_verify_nonce( sanitize_text_field( $_POST['ajax_nonce'] ), 'filter-ajax-nonce' ) ? wc_clean( wp_unslash( $_POST['ids'] ) ) : null );
-        if ( !empty( $swap ) ) {
-            $swap = explode( ',', $swap );
-            $swap = array_filter( $swap );
+        if ( !empty( $swap ) && is_string( $swap ) ) {
+            //the two attributes swapped: keep only ones that exist
+            $swap = array_values( array_filter( explode( ',', $swap ), function ( $id ) use($actual) {
+                return '' !== $id && array_key_exists( $id, $actual );
+            } ) );
             if ( count( $swap ) === 2 ) {
                 $items = $this->swapItems( $swap, $actual );
             }

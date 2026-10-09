@@ -137,7 +137,7 @@ class QueryHelper
     public static function getPostInProducts()
     {
         $postInFromQuery = WC_Query::get_main_query()->query_vars['post__in'];
-        $postInIds       = !empty($postInFromQuery) ? implode(',', $postInFromQuery) : null;
+        $postInIds       = !empty($postInFromQuery) ? implode(',', array_map('absint', (array) $postInFromQuery)) : null;
 
         return $postInIds;
     }
